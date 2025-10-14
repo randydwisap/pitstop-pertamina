@@ -35,7 +35,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->brandName('Pitstop Pertamina')
-            ->login()            
+            ->login()
+            ->registration()             
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Profile')

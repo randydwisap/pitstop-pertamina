@@ -11,6 +11,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Support\Facades\Storage;
 use Filament\Models\Contracts\HasAvatar; 
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -18,8 +19,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     use HasFactory, Notifiable, HasRoles;
     public function canAccessPanel(Panel $panel): bool
     {
-        // izinkan hanya Admin / Super Admin
-        return $this->hasAnyRole(['Admin', 'Super Admin', 'super_admin']);
+        // ⬅️ Pastikan 'mitra' bisa akses panel ini (kalau memang diizinkan)
+        return $this->hasAnyRole(['Admin', 'Super Admin', 'super_admin', 'mitra']);
     }
     /**
      * The attributes that are mass assignable.
@@ -50,6 +51,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return asset('images/default-avatar.png');
     }
 
+    protected static function booted(): void
+    {
+        static::created(function (User $user) {
+            // Pastikan role 'mitra' ada
+            Role::findOrCreate('mitra');
+
+            // Kalau belum punya, assign
+            if (! $user->hasRole('mitra')) {
+                $user->assignRole('mitra');
+            }
+        });
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
