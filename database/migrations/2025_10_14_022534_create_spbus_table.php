@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('spbus', function (Blueprint $table) {
             $table->id(); // id
             $table->string('nomor_spbu')->unique();   // Nomor SPBU
-            $table->string('tipe')();   // Tipe SPBU (internal/eksternal)
+            $table->string('tipe');   // Tipe SPBU (internal/eksternal)
             $table->string('alamat')->nullable();     // Alamat
             $table->string('kecamatan')->nullable();  // kecamatan
             $table->string('kelurahan')->nullable();  // Kelurahan
