@@ -25,6 +25,7 @@ use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 use Filament\Navigation\MenuItem;
 use App\Filament\Pages\EditMyProfile; 
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -87,6 +88,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureEmailIsVerified::class,
             ]);
     }
 }

@@ -12,6 +12,7 @@ use Filament\Panel;
 use Illuminate\Support\Facades\Storage;
 use Filament\Models\Contracts\HasAvatar; 
 use Spatie\Permission\Models\Role;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
