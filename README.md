@@ -18,6 +18,14 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - Database agnostic [schema migrations](https://laravel.com/docs/migrations).
 - [Robust background job processing](https://laravel.com/docs/queues).
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Cara bikin user
+php artisan tinker
+>>> $u = \App\Models\User::first();
+>>> $u->assignRole('Super Admin');
+
+php artisan db:seed --class=RolesSeeder 
+php artisan shield:super-admin
+php artisan make:filament-user
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 

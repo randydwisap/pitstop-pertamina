@@ -9,8 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\HasAvatar; 
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -28,7 +30,25 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'picture'
     ];
+
+    public function getPictureUrlAttribute(): ?string
+    {
+        if ($this->picture) {
+            return \Storage::disk('public')->url($this->picture);
+        }
+        return asset('images/default-avatar.png');
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        if ($this->picture) {
+            return Storage::disk('public')->url($this->picture);
+        }
+        
+        return asset('images/default-avatar.png');
+    }
 
     /**
      * The attributes that should be hidden for serialization.

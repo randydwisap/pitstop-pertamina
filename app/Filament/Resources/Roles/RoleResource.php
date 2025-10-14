@@ -43,7 +43,7 @@ class RoleResource extends Resource
 
     public static function getNavigationGroup(): string|UnitEnum|null
     {
-        return 'Authorization'; // nama group
+        return 'Management'; // nama group
     }
     public static function getNavigationSort(): ?int
     {

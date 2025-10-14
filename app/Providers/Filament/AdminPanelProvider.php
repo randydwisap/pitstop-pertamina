@@ -22,6 +22,9 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\View\PanelsRenderHook;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
+use Filament\Navigation\MenuItem;
+use App\Filament\Pages\EditMyProfile; 
+use Filament\Support\Icons\Heroicon;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,18 +32,24 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('admin')
-            ->path('admin')
+            ->id('dashboard')
+            ->path('dashboard')
             ->brandName('Pitstop Pertamina')
-            ->login()
-            ->profile()                    
+            ->login()            
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Profile')
+                    ->icon('heroicon-m-user-circle')
+                    ->url(fn (): string => EditMyProfile::getUrl()),
+            ])
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Blue,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
+                EditMyProfile::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
@@ -74,7 +83,6 @@ class AdminPanelProvider extends PanelProvider
             ['code' => 'en', 'name' => 'English',           'flag' => 'gb'],
         ])
         ->showFlags(true) // atau false kalau mau teks saja
-        ->renderHook(PanelsRenderHook::USER_MENU_PROFILE_AFTER),
             ])
             ->authMiddleware([
                 Authenticate::class,

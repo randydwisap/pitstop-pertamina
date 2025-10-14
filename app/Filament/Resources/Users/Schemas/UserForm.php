@@ -7,12 +7,27 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\FileUpload;
 
 class UserForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
+            FileUpload::make('picture')
+                ->label('Foto Profil')
+                ->image()
+                ->imageEditor()          // crop/rotate
+                ->imageCropAspectRatio('1:1')
+                ->imagePreviewHeight('220')
+                ->directory('users/avatars') // -> storage/app/public/users/avatars
+                ->disk('public')
+                ->visibility('public')
+                ->openable()
+                ->downloadable()
+                ->helperText('Unggah foto square agar tampak maksimal.')
+                ->columnSpanFull(),      // kalau ingin full width (opsional)
+
             TextInput::make('name')
                 ->label('Name')
                 ->required()

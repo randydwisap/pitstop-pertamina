@@ -6,7 +6,7 @@ use App\Models\User;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
@@ -21,6 +21,13 @@ class UsersTable
     {
         return $table
             ->columns([
+                ImageColumn::make('picture')
+                    ->label('Foto')
+                    ->disk('public')
+                    ->circular()
+                    ->size(40)
+                    ->defaultImageUrl(asset('images/default-avatar.png')), // opsional fallback
+
                 TextColumn::make('name')
                     ->label('Name')
                     ->searchable()
@@ -40,7 +47,8 @@ class UsersTable
                 TextColumn::make('email_verified_at')
                     ->label('Verified at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('created_at')
                     ->label('Created')
