@@ -62,7 +62,16 @@ jobs:
           # Laravel housekeeping (manual, pengganti composer scripts)
           php artisan package:discover --ansi || true
           php artisan migrate --force || true
-          php artisan storage:link || true    # akan di-skip jika symlink diblok
+
+          # === GANTI php artisan storage:link DENGAN SYMLINK MANUAL ===
+          cd /home/u480825811/domains/pitstoppertamina.com/public_html
+          mkdir -p storage/app/public
+          rm -rf public/storage
+          cd public
+          ln -s ../storage/app/public storage
+          ls -l storage || true
+          cd /home/u480825811/domains/pitstoppertamina.com/public_html
+          # === END SYMLINK MANUAL ===
 
           php artisan config:clear || true
           php artisan cache:clear || true
