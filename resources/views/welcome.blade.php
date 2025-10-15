@@ -2210,7 +2210,7 @@ menjadi salah satu Solusi dalam menaikkan penjualan sekaligus meningkatkan penge
                 <i class="bi bi-envelope"></i>
               </div>
               <div class="contact-info">
-                <p>contact@example.com</p>
+                <p>pertamina.pitstop.mlg@gmail.com</p>
               </div>
             </div>
 
