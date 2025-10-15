@@ -57,7 +57,17 @@ class ProduksTable
                             ->label(' ')
                             ->badge()
                             ->color('info')
-                            ->size('sm'),
+                            ->size('sm')
+                            ->formatStateUsing(function ($state) {
+                                $map = [
+                                    'minuman' => 'Minuman',
+                                    'kering'  => 'Makanan Kering',
+                                    'panas'   => 'Makanan Panas',
+                                    'lainnya' => 'Lainnya',
+                                ];
+
+                                return $map[strtolower((string) $state)] ?? ucfirst((string) $state);
+                            }),
 
                         TextColumn::make('berat_gram')
                             ->label('Berat')
@@ -67,21 +77,34 @@ class ProduksTable
 
                         TextColumn::make('ukuran')
                             ->label('Ukuran')
-                            ->formatStateUsing(fn ($state, $record) => implode(' × ', array_filter([
-                                $record->panjang_cm, $record->lebar_cm, $record->tinggi_cm,
-                            ])) . ' cm')
-                            ->toggleable(),
+                            ->state(function ($record) {
+                                $p = $record->panjang_cm;
+                                $l = $record->lebar_cm;
+                                $t = $record->tinggi_cm;
+
+                                if (! $p && ! $l && ! $t) {
+                                    return null; // biar placeholder yang tampil
+                                }
+
+                                // tampilkan hanya yang ada
+                                $parts = array_filter([$p, $l, $t], fn ($v) => filled($v));
+                                return implode(' × ', $parts) . ' cm';
+                            })
+                            ->placeholder('-'),
 
                         TextColumn::make('kadaluarsa')
                             ->label('Kadaluarsa')
-                            ->formatStateUsing(function ($state, $record) {
+                            ->prefix('Expired: ')
+                            ->state(function ($record) {
                                 if (! $record->kadaluarsa_nilai || ! $record->kadaluarsa_satuan) {
-                                    return '-';
+                                    return null;
                                 }
-                                return $record->kadaluarsa_nilai.' '.$record->kadaluarsa_satuan;
+
+                                return $record->kadaluarsa_nilai . ' ' . $record->kadaluarsa_satuan;
                             })
                             ->badge()
-                            ->color('warning'),
+                            ->color('warning')
+                            ->placeholder('-'),
 
                         // EKSPEKTASI PENJUALAN / BLN
                         TextColumn::make('ekspektasi_penjualan')

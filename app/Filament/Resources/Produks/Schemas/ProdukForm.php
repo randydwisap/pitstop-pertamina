@@ -42,16 +42,21 @@ class ProdukForm
                 ->suffix('Rp')
                 ->required(),
 
-            Select::make('jenis_produk')
-                ->label('Jenis Produk')
-                ->options([
-                    'minuman'       => 'Minuman',
-                    'kering'       => 'Makanan Kering',
-                    'panas'       => 'Makanan Panas',
-                    'lainnya'   => 'Lainnya',
-                ])
-                ->searchable()
-                ->native(false),
+            TextColumn::make('jenis_produk')
+                ->label(' ')
+                ->badge()
+                ->color('info')
+                ->size('sm')
+                ->formatStateUsing(function ($state) {
+                    $map = [
+                        'minuman' => 'Minuman',
+                        'kering'  => 'Makanan Kering',
+                        'panas'   => 'Makanan Panas',
+                        'lainnya' => 'Lainnya',
+                    ];
+
+                    return $map[strtolower((string) $state)] ?? ucfirst((string) $state);
+                }),
 
                 TextInput::make('berat_gram')
                     ->label('Berat')
