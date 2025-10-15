@@ -1,41 +1,90 @@
-# Pitstop Pertamina
+# Pitstop Pertamina — README
 
-Panduan instalasi dan setup proyek **Laravel + Filament** untuk pengembangan lokal dan produksi (Hostinger).
-
----
-
-## Prasyarat
-
-- **PHP** 8.1/8.2 dengan ekstensi: `pdo_mysql`, `mbstring`, `openssl`, `fileinfo`, `curl`, `intl`, `bcmath`, `zip`
-- **Composer**
-- **MySQL/MariaDB**
-- (Produksi) Akses **SSH** Hostinger
+Panduan ringkas instalasi dan setup proyek **Laravel + Filament** serta instruksi khusus untuk **storage link** di server Hostinger.
 
 ---
 
-## Instalasi Lokal (Development)
+## 🔧 Cara Install (Lokal / Development)
+
+1. Buat folder untuk direktori proyek.
+2. Buka Terminal, clone repository:
+   ```bash
+   git clone https://github.com/randydwisap/pitstop-pertamina.git
+   cd pitstop-pertamina
+   ```
+3. Install dependensi:
+   ```bash
+   composer u
+   # atau: composer install
+   ```
+4. Atur koneksi database di file `.env`.
+5. Migrasi database:
+   ```bash
+   php artisan migrate
+   ```
+6. Buat user:
+   ```bash
+   php artisan make:filament-user
+   ```
+7. Jalankan seeder untuk mengisi tabel **Roles**:
+   ```bash
+   php artisan db:seed --class=RolesSeeder
+   ```
+8. Inject role ke user yang dibuat:
+   ```bash
+   php artisan tinker
+   >>> $u = \App\Models\User::first();
+   >>> $u->assignRole('Super Admin');
+   >>> exit
+   ```
+9. Daftarkan **Shield** untuk role Super Admin:
+   ```bash
+   php artisan shield:super-admin
+   php artisan shield:generate --all
+   ```
+10. Buat storage link (lokal):
+    ```bash
+    php artisan storage:link
+    ```
+11. Jalankan server lokal:
+    ```bash
+    php artisan serve
+    ```
+    Akses via: `http://127.0.0.1:8000`
+
+---
+
+## 🖇️ Storage Link di Server (Hostinger)
+
+> Jika `php artisan storage:link` gagal karena `exec()` dinonaktifkan, gunakan cara manual berikut.
+
+Jalankan dari **root project**: `/home/u480825811/domains/pitstoppertamina.com/public_html`
 
 ```bash
-# 1) Clone repo
-git clone https://github.com/randydwisap/pitstop-pertamina.git
-cd pitstop-pertamina
+# 1. Masuk ke folder project
+cd /home/u480825811/domains/pitstoppertamina.com/public_html
 
-# 2) Install dependencies
-composer install    # atau: composer update
+# 2. Pastikan struktur ada
+mkdir -p storage/app/public
 
-# 3) Salin & atur environment
-cp .env.example .env
-# -> edit .env: DB_*, APP_URL, dll
+# 3. Hapus jika ada 'public/storage' yang salah (folder/link lama)
+rm -rf public/storage
 
-# 4) Generate app key
-php artisan key:generate
+# 4. Buat symlink RELATIF: public/storage -> ../storage/app/public
+cd public
+ln -s ../storage/app/public storage
 
-# 5) Migrasi database
-php artisan migrate
+# 5. Verifikasi
+ls -l storage
+# Output harus: storage -> ../storage/app/public
+```
 
-# 6) Buat user admin Filament
-php artisan make:filament-user
-# -> isi email & password sesuai prompt
+---
 
-# 7) Seed Roles
-php artisan db:seed --class=RolesSeeder
+## 🔐 SSH Server
+
+```bash
+ssh -p 65002 u480825811@46.202.186.223
+```
+
+> Setelah login SSH, pastikan perintah di bagian **Storage Link di Server** dijalankan dari direktori project yang benar.
