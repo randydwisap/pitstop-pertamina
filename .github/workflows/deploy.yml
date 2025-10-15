@@ -2,7 +2,7 @@ name: Deploy to Hostinger via SSH
 
 on:
   push:
-    branches: [ "main" ]   # ganti kalau kamu pakai branch lain
+    branches: [ "main" ]   # ganti jika deploy dari branch lain
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with: { fetch-depth: 1 }
+        with:
+          fetch-depth: 1
 
       - name: Add SSH key
         uses: webfactory/ssh-agent@v0.9.0
@@ -47,19 +48,21 @@ jobs:
           set -e
           cd ${{ secrets.HOSTINGER_PATH }}
 
-          # Maintenance optional:
+          # OPTIONAL: maintenance mode saat deploy
           # php artisan down --render="errors::maintenance" || true
 
-          # Composer install di server (kalau tersedia)
+          # Install dependencies TANPA composer scripts (hindari pre/post script errors)
           if command -v composer >/dev/null 2>&1; then
-            composer install --no-dev --optimize-autoloader
+            COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 \
+            composer install --no-dev --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts
           else
-            echo "Composer not found on server. Consider 'Versi B' to upload vendor."
+            echo "Composer not found on server. Consider building vendor in CI dan upload."
           fi
 
-          # Migrasi & housekeeping Laravel
+          # Laravel housekeeping (manual, pengganti composer scripts)
+          php artisan package:discover --ansi || true
           php artisan migrate --force || true
-          php artisan storage:link || true   # biarkan ignore jika diblok hostinger
+          php artisan storage:link || true    # akan di-skip jika symlink diblok
 
           php artisan config:clear || true
           php artisan cache:clear || true
