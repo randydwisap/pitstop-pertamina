@@ -45,82 +45,82 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="#hero" class="active">Home</a></li>
-                    <li class="dropdown extended-dropdown-2"><a href="#"><span>Extended Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <li class="dropdown extended-dropdown-2"><a href="#"><span>Dashboard</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li>
-                <a href="#">
+                <a href="/dashboard">
                   <div class="menu-item-content">
                     <div class="menu-icon">
                       <i class="bi bi-speedometer2"></i>
                     </div>
                     <div class="menu-text">
                       <span class="menu-title">Analytics Dashboard</span>
-                      <span class="menu-description">Track your performance metrics</span>
+                      <span class="menu-description">Pantau data produk dan pengajuan produkmu !</span>
                     </div>
                   </div>
                   <div class="menu-badge">New</div>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/dashboard">
                   <div class="menu-item-content">
                     <div class="menu-icon">
                       <i class="bi bi-people"></i>
                     </div>
                     <div class="menu-text">
                       <span class="menu-title">Team Management</span>
-                      <span class="menu-description">Manage your team members</span>
+                      <span class="menu-description">Terhubung langsung dengan petugas</span>
                     </div>
                   </div>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/dashboard">
                   <div class="menu-item-content">
                     <div class="menu-icon">
                       <i class="bi bi-graph-up"></i>
                     </div>
                     <div class="menu-text">
                       <span class="menu-title">Sales Reports</span>
-                      <span class="menu-description">Review financial statistics</span>
+                      <span class="menu-description">Data Penjualan akan dapat diliihat oleh mitra</span>
                     </div>
                   </div>
-                  <div class="menu-badge hot">Hot</div>
+                  <div class="menu-badge hot">Soon</div>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/dashboard/profile">
                   <div class="menu-item-content">
                     <div class="menu-icon">
                       <i class="bi bi-shield-lock"></i>
                     </div>
                     <div class="menu-text">
                       <span class="menu-title">Security Center</span>
-                      <span class="menu-description">Manage privacy settings</span>
+                      <span class="menu-description">Manajemen privasi yang aman</span>
                     </div>
                   </div>
                 </a>
               </li>
               <li>
-                <a href="#">
+                <a href="/dashboard">
                   <div class="menu-item-content">
                     <div class="menu-icon">
                       <i class="bi bi-chat-dots"></i>
                     </div>
                     <div class="menu-text">
                       <span class="menu-title">Message Center</span>
-                      <span class="menu-description">Check your notifications</span>
+                      <span class="menu-description">Pesan Notifikasi real-time</span>
                     </div>
                   </div>
-                  <div class="menu-badge updates">5</div>
+                  <div class="menu-badge hot">Soon</div>
                 </a>
               </li>
             </ul>
           </li>
           <li><a href="#about">About</a></li>
           <li><a href="#testimonials">Testimoni</a></li>
-          <li><a href="#features">Fitur</a></li>
           <li><a href="#tabs">Alur Pendaftaran</a></li>
+          <li><a href="#features">Fitur</a></li>
           {{-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="#">Dropdown 1</a></li>
