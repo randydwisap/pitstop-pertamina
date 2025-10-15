@@ -118,9 +118,9 @@
             </ul>
           </li>
           <li><a href="#about">About</a></li>
-          <li><a href="#testimonials">Testimoni</a></li>
-          <li><a href="#tabs">Alur Pendaftaran</a></li>
           <li><a href="#features">Fitur</a></li>
+          <li><a href="#tabs">Alur Pendaftaran</a></li>
+          <li><a href="#testimonials">Testimoni</a></li>
           {{-- <li class="dropdown"><a href="#"><span>Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
               <li><a href="#">Dropdown 1</a></li>
