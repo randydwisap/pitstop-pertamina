@@ -118,6 +118,14 @@ class ProduksTable
                             ->label('Aktif')
                             ->alignRight()
                             ->sortable(),
+                        
+                        TextColumn::make('toko.nama_toko')
+                            ->label('Toko')
+                            ->icon('heroicon-m-building-storefront')
+                            ->size('sm')
+                            ->wrap()
+                            ->sortable()
+                            ->visible(fn () => auth()->user()?->hasAnyRole(['super_admin', 'Super Admin']) === true),
                     ])->space(0),
                 ])
                 ->extraAttributes([
