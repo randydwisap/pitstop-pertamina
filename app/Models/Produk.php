@@ -41,4 +41,9 @@ class Produk extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function pengajuans(): HasMany
+    {
+        return $this->hasMany(Pengajuan::class, 'product_id');
+    }
 }

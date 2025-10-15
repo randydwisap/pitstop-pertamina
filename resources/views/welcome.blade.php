@@ -759,22 +759,22 @@
             <div class="icon-wrapper">
               <i class="bi bi-graph-up"></i>
             </div>
-            <h3>Performance Analytics</h3>
+            <h3>Data Realtime</h3>
             <p>
-              Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit neque, auctor sit amet aliquam vel.
+             Lihat ringkasan performa pendaftaran dalam sekali klik dari jumlah pengajuan hingga status terbaru. Data disajikan sederhana agar Anda cepat menangkap tren dan mengambil langkah berikutnya.
             </p>
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Real-time data visualization</span>
+                <span>Cek Status Pengajuan</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Custom report generation</span>
+                <span>Notifikasi</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Predictive analysis models</span>
+                <span>Pemantauan Proses Pengajuan</span>
               </div>
             </div>
             <div class="image-container">
@@ -786,22 +786,22 @@
             <div class="icon-wrapper">
               <i class="bi bi-shield-lock"></i>
             </div>
-            <h3>Enterprise Security Framework</h3>
+            <h3>Sistem Keamanan Data</h3>
             <p>
-              Quisque velit nisi, pretium ut lacinia in, elementum id enim. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar.
+              Keamanan data Anda adalah prioritas utama kami. Seluruh proses pendaftaran dilindungi dengan sistem keamanan berlapis agar setiap informasi tetap aman dan hanya diakses oleh pihak yang berwenang.
             </p>
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Multi-factor authentication</span>
+                <span>Pemindaian Keamanan</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>End-to-end encryption standard</span>
+                <span>Enkripsi End to End</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Automated security audits</span>
+                <span>Validasi Otomatis</span>
               </div>
             </div>
             <div class="image-container">
@@ -813,22 +813,22 @@
             <div class="icon-wrapper">
               <i class="bi bi-people"></i>
             </div>
-            <h3>Collaborative Team Environment</h3>
+            <h3>Komunikasi dengan Admin</h3>
             <p>
-              Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Cras ultricies ligula sed magna dictum porta.
+              Setiap proses pendaftaran tidak berhenti setelah formulir dikirim. Melalui fitur komunikasi langsung, Anda dapat berinteraksi dengan admin untuk memastikan semua data dan dokumen berjalan sesuai prosedur
             </p>
             <div class="features-list">
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Shared workspace functionality</span>
+                <span>Respons Cepat dengan Admin</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Real-time communication tools</span>
+                <span>Riwayat Permintaan</span>
               </div>
               <div class="feature-item">
                 <i class="bi bi-check-circle-fill"></i>
-                <span>Progress tracking dashboards</span>
+                <span>Pemberitahuan Cepat</span>
               </div>
             </div>
             <div class="image-container">
@@ -1176,38 +1176,9 @@
                       <i class="bi bi-person-add"></i>
                       <span>Buat Akun</span>
                     </div>
-                    <h3>Revolutionary Design Thinking</h3>
-                    <p>Sed ut perspiciatis unde omnis natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
-
-                    <div class="highlight-stats">
-                      <div class="stat-item">
-                        <span class="stat-value">145%</span>
-                        <span class="stat-label">Innovation Rate</span>
-                      </div>
-                      <div class="stat-item">
-                        <span class="stat-value">28K</span>
-                        <span class="stat-label">Ideas Generated</span>
-                      </div>
-                    </div>
-
-                    <div class="feature-points">
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Nemo enim ipsam voluptatem quia voluptas sit</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Aspernatur aut odit fugit sed quia consequuntur</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Magni dolores eos qui ratione voluptatem</span>
-                      </div>
-                    </div>
-
-                    <a href="#" class="explore-link">
-                      Explore Innovation <i class="bi bi-arrow-up-right"></i>
-                    </a>
+                    <h3>Daftar Akun Mitra</h3>
+                    <p>Langkah pertama, buat akun mitra terlebih dahulu agar Anda bisa mengakses seluruh fitur di website ini. Isi data diri dengan lengkap seperti nama, alamat email, dan nomor telepon yang aktif. Proses pembuatan akun ini hanya memerlukan beberapa menit saja dan menjadi syarat utama sebelum mengajukan produk.</p>
+                    <p>Setelah akun berhasil dibuat, Anda akan mendapatkan akses ke halaman mitra. Di sana, Anda dapat melihat berbagai menu untuk melengkapi data dan memantau proses pengajuan Anda. Pastikan informasi yang Anda masukkan benar agar admin dapat menghubungi Anda dengan mudah jika dibutuhkan verifikasi tambahan.</p>                    
                   </div>
                 </div>
                 <div class="col-lg-6">
@@ -1235,38 +1206,9 @@
                       <i class="bi bi-database-add"></i>
                       <span>Masukkan Produk</span>
                     </div>
-                    <h3>Data-Driven Business Strategy</h3>
-                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-
-                    <div class="highlight-stats">
-                      <div class="stat-item">
-                        <span class="stat-value">234%</span>
-                        <span class="stat-label">Growth Rate</span>
-                      </div>
-                      <div class="stat-item">
-                        <span class="stat-value">156</span>
-                        <span class="stat-label">Strategies</span>
-                      </div>
-                    </div>
-
-                    <div class="feature-points">
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Similique sunt in culpa qui officia deserunt</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Mollitia animi id est laborum et dolorum fuga</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Et harum quidem rerum facilis est expedita</span>
-                      </div>
-                    </div>
-
-                    <a href="#" class="explore-link">
-                      View Strategy <i class="bi bi-arrow-up-right"></i>
-                    </a>
+                    <h3>Masukkan Data Produk Anda</h3>
+                    <p>Setelah akun aktif, lanjutkan dengan menambahkan data produk yang ingin diajukan. Isi informasi penting seperti nama produk, deskripsi singkat, jenis produk, dan kategori. Anda juga bisa menambahkan foto produk agar admin dapat menilai dengan lebih jelas.</p>
+                    <p>Pastikan semua data sudah lengkap dan sesuai dengan kondisi produk sebenarnya. Semakin lengkap informasi yang Anda berikan, semakin cepat admin dapat melakukan peninjauan dan memberikan keputusan terhadap pengajuan Anda.</p>                    
                   </div>
                 </div>
                 <div class="col-lg-6">
@@ -1292,40 +1234,11 @@
                   <div class="content-area">
                     <div class="content-badge">
                       <i class="bi bi-building-add"></i>
-                      <span>High Performance</span>
+                      <span>Ajukan ke SPBU</span>
                     </div>
-                    <h3>Optimized System Performance</h3>
-                    <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet voluptates repudiandae sint et molestiae non recusandae itaque earum rerum hic tenetur sapiente delectus.</p>
-
-                    <div class="highlight-stats">
-                      <div class="stat-item">
-                        <span class="stat-value">99.8%</span>
-                        <span class="stat-label">System Uptime</span>
-                      </div>
-                      <div class="stat-item">
-                        <span class="stat-value">2.4s</span>
-                        <span class="stat-label">Load Time</span>
-                      </div>
-                    </div>
-
-                    <div class="feature-points">
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Ut aut reiciendis voluptatibus maiores alias</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Consequatur aut perferendis doloribus asperiores</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Repellat nam libero tempore cum soluta nobis</span>
-                      </div>
-                    </div>
-
-                    <a href="#" class="explore-link">
-                      Check Performance <i class="bi bi-arrow-up-right"></i>
-                    </a>
+                    <h3>Ajukan ke SPBU yang Tersedia</h3>
+                    <p>Jika data produk sudah lengkap, Anda bisa memilih SPBU tujuan yang tersedia di sistem. Pilih SPBU yang paling sesuai dengan wilayah atau kebutuhan distribusi produk Anda. Setelah memilih, kirim pengajuan langsung melalui halaman yang disediakan.</p>
+                    <p>Setiap pengajuan akan otomatis masuk ke sistem admin untuk diperiksa. Proses ini memastikan produk Anda dikirim ke SPBU yang tepat dan sesuai dengan ketentuan yang berlaku. Anda juga bisa memantau status pengajuan langsung dari akun mitra Anda.</p>                   
                   </div>
                 </div>
                 <div class="col-lg-6">
@@ -1351,40 +1264,13 @@
                   <div class="content-area">
                     <div class="content-badge">
                       <i class="bi bi-phone-vibrate"></i>
-                      <span>Smart Integration</span>
+                      <span>Admin akan Menghubungi</span>
                     </div>
-                    <h3>Seamless Workflow Integration</h3>
-                    <p>Eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus omnis voluptas assumenda est omnis dolor repellendus temporibus autem quibusdam et aut officiis debitis.</p>
-
-                    <div class="highlight-stats">
-                      <div class="stat-item">
-                        <span class="stat-value">450+</span>
-                        <span class="stat-label">Integrations</span>
-                      </div>
-                      <div class="stat-item">
-                        <span class="stat-value">85%</span>
-                        <span class="stat-label">Automation</span>
-                      </div>
-                    </div>
-
-                    <div class="feature-points">
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Rerum necessitatibus saepe eveniet voluptates</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Repudiandae sint et molestiae non recusandae</span>
-                      </div>
-                      <div class="point-item">
-                        <i class="bi bi-arrow-right"></i>
-                        <span>Itaque earum rerum hic tenetur sapiente</span>
-                      </div>
-                    </div>
-
-                    <a href="#" class="explore-link">
-                      Start Integration <i class="bi bi-arrow-up-right"></i>
-                    </a>
+                    <h3>Admin Akan Menghubungi Anda</h3>
+                    <p>Setelah pengajuan dikirim, admin akan meninjau data dan dokumen yang Anda kirimkan. Jika semuanya sudah lengkap, admin akan menghubungi Anda untuk memberikan informasi lebih lanjut mengenai status pengajuan atau langkah berikutnya.</p>
+                    <p>Apabila ada data yang perlu diperbaiki, Anda juga akan mendapatkan pemberitahuan melalui email atau pesan langsung di sistem. Dengan begitu, Anda bisa segera memperbarui informasi agar proses pendaftaran berjalan lancar tanpa harus menunggu terlalu lama.</p>
+                    <div class="highlight-stats">                      
+                    </div>                    
                   </div>
                 </div>
                 <div class="col-lg-6">

@@ -36,7 +36,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'picture'
     ];
 
-        public function toko(): HasOne
+    public function toko(): HasOne
     {
         return $this->hasOne(Toko::class, 'user_id');
     }
@@ -91,5 +91,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function pengajuansApproved(): HasMany
+    {
+        return $this->hasMany(Pengajuan::class, 'approved_by');
+    }
+
+    public function produks(): HasMany
+    {
+        return $this->hasMany(Produk::class);
     }
 }

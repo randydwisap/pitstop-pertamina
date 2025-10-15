@@ -26,4 +26,6 @@ class Toko extends Model
     {
         return $this->hasMany(Produk::class);
     }
+
+    
 }
