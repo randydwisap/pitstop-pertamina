@@ -61,7 +61,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
             ])
             ->brandLogo(fn () => new HtmlString(
         '<img src="'.asset('images/logo.png').'" alt="Pitstop Pertamina" class="h-6 w-auto">'
