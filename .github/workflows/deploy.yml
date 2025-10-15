@@ -1,0 +1,76 @@
+name: Deploy to Hostinger via SSH
+
+on:
+  push:
+    branches: [ "main" ]   # ganti kalau kamu pakai branch lain
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Prepare rsync exclude
+        run: |
+          cat > .rsync-exclude << 'EOF'
+          .git/
+          .github/
+          node_modules/
+          vendor/
+          tests/
+          storage/logs/**
+          storage/framework/cache/data/**
+          storage/*.key
+          .env
+          **/*.env
+          EOF
+
+      - name: Rsync source to server
+        run: |
+          rsync -az --delete \
+            -e "ssh -p ${{ secrets.HOSTINGER_PORT }} -o StrictHostKeyChecking=no" \
+            --exclude-from=.rsync-exclude \
+            ./ ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }}:${{ secrets.HOSTINGER_PATH }}/
+
+      - name: Remote deploy steps
+        run: |
+          ssh -p ${{ secrets.HOSTINGER_PORT }} -o StrictHostKeyChecking=no ${{ secrets.HOSTINGER_USER }}@${{ secrets.HOSTINGER_HOST }} << 'EOF'
+          set -e
+          cd ${{ secrets.HOSTINGER_PATH }}
+
+          # Maintenance optional:
+          # php artisan down --render="errors::maintenance" || true
+
+          # Composer install di server (kalau tersedia)
+          if command -v composer >/dev/null 2>&1; then
+            composer install --no-dev --optimize-autoloader
+          else
+            echo "Composer not found on server. Consider 'Versi B' to upload vendor."
+          fi
+
+          # Migrasi & housekeeping Laravel
+          php artisan migrate --force || true
+          php artisan storage:link || true   # biarkan ignore jika diblok hostinger
+
+          php artisan config:clear || true
+          php artisan cache:clear || true
+          php artisan route:clear || true
+          php artisan view:clear || true
+
+          php artisan config:cache || true
+          php artisan route:cache || true
+          php artisan view:cache || true
+
+          chmod -R 775 storage bootstrap/cache || true
+
+          # php artisan up || true
+          EOF
