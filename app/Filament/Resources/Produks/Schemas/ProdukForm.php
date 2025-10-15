@@ -45,14 +45,63 @@ class ProdukForm
             Select::make('jenis_produk')
                 ->label('Jenis Produk')
                 ->options([
-                    'oli'       => 'Oli',
-                    'ban'       => 'Ban',
-                    'aki'       => 'Aki',
-                    'aksesoris' => 'Aksesoris',
+                    'minuman'       => 'Minuman',
+                    'kering'       => 'Makanan Kering',
+                    'panas'       => 'Makanan Panas',
                     'lainnya'   => 'Lainnya',
                 ])
                 ->searchable()
                 ->native(false),
+
+                TextInput::make('berat_gram')
+                    ->label('Berat')
+                    ->numeric()
+                    ->minValue(0)
+                    ->suffix('gram')
+                    ->placeholder('0')
+                    ->helperText('Berat bersih produk (gram).'),
+
+                TextInput::make('panjang_cm')
+                    ->label('Panjang')
+                    ->numeric()
+                    ->minValue(0)
+                    ->suffix('cm')
+                    ->placeholder('0'),
+
+                TextInput::make('lebar_cm')
+                    ->label('Lebar')
+                    ->numeric()
+                    ->minValue(0)
+                    ->suffix('cm')
+                    ->placeholder('0'),
+
+                TextInput::make('tinggi_cm')
+                    ->label('Tinggi')
+                    ->numeric()
+                    ->minValue(0)
+                    ->suffix('cm')
+                    ->placeholder('0')
+                    ->helperText('Format ukuran akan ditampilkan sebagai: p × l × t (cm).'),
+
+                TextInput::make('kadaluarsa_nilai')
+                    ->label('Masa Kadaluarsa')
+                    ->numeric()
+                    ->minValue(1)
+                    ->placeholder('mis. 12')
+                    ->requiredWith('kadaluarsa_satuan')
+                    ->helperText('Isi angka lalu pilih satuannya.'),
+
+                Select::make('kadaluarsa_satuan')
+                    ->label('Satuan Kadaluarsa')
+                    ->options([
+                        'jam'   => 'Jam',
+                        'hari'  => 'Hari',
+                        'bulan' => 'Bulan',
+                    ])
+                    ->native(false)
+                    ->searchable()
+                    ->requiredWith('kadaluarsa_nilai'),
+
 
             TextInput::make('ekspektasi_penjualan')
                 ->label('Ekspektasi Penjualan (per bulan)')

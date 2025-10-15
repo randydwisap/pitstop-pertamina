@@ -28,19 +28,28 @@ class ListTokos extends ListRecords
                 ->visible(fn () => $canCreate),
         ];
     }
-    public function mount(): void
+        public function mount(): void
     {
         parent::mount();
 
         $user = auth()->user();
 
-        if (! $user?->can('view_any_toko')) {
-            $toko = Toko::where('user_id', $user?->id)->first();
-
-            if ($toko) {
-                $this->redirect(TokoResource::getUrl('edit', ['record' => $toko]));
-            }
+        // Admin / super admin (punya izin view_any_toko) tetap lihat daftar
+        if ($user?->can('view_any_toko')) {
+            return;
         }
+
+        // Pengguna biasa: cek apakah sudah punya toko
+        $toko = Toko::where('user_id', $user?->id)->first();
+
+        if ($toko) {
+            // Sudah punya → langsung ke edit
+            $this->redirect(TokoResource::getUrl('edit', ['record' => $toko]));
+            return;
+        }
+
+        // Belum punya → langsung ke create
+        $this->redirect(TokoResource::getUrl('create'));
     }
     public function getTitle(): string
     {

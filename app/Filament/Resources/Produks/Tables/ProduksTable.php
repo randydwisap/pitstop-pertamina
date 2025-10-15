@@ -59,6 +59,30 @@ class ProduksTable
                             ->color('info')
                             ->size('sm'),
 
+                        TextColumn::make('berat_gram')
+                            ->label('Berat')
+                            ->numeric()
+                            ->suffix(' g')   // tampilkan gram
+                            ->sortable(),
+
+                        TextColumn::make('ukuran')
+                            ->label('Ukuran')
+                            ->formatStateUsing(fn ($state, $record) => implode(' × ', array_filter([
+                                $record->panjang_cm, $record->lebar_cm, $record->tinggi_cm,
+                            ])) . ' cm')
+                            ->toggleable(),
+
+                        TextColumn::make('kadaluarsa')
+                            ->label('Kadaluarsa')
+                            ->formatStateUsing(function ($state, $record) {
+                                if (! $record->kadaluarsa_nilai || ! $record->kadaluarsa_satuan) {
+                                    return '-';
+                                }
+                                return $record->kadaluarsa_nilai.' '.$record->kadaluarsa_satuan;
+                            })
+                            ->badge()
+                            ->color('warning'),
+
                         // EKSPEKTASI PENJUALAN / BLN
                         TextColumn::make('ekspektasi_penjualan')
                             ->label(' ')

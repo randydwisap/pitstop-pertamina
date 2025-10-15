@@ -19,6 +19,12 @@ class Produk extends Model
         'is_active',
         'toko_id',
         'user_id',
+        'berat_gram',
+        'panjang_cm',
+        'lebar_cm',
+        'tinggi_cm',
+        'kadaluarsa_nilai',
+        'kadaluarsa_satuan',
     ];
        
     protected $casts = [

@@ -29,12 +29,12 @@ class TokoForm
                     ->downloadable()
                     ->openable()
                     ->dehydrateStateUsing(fn ($state) => is_array($state) ? ($state[0] ?? null) : $state)
-                    ->helperText('Gunakan foto tampak depan, rasio 16:9. Maks 2MB.'),
+                    ->helperText('Gunakan foto tampak depan atau logo, rasio 16:9. Maks 2MB.'),
                 
                 // NAMA TOKO — auto-trim & kapitalisasi awal kata biar rapi
                 TextInput::make('nama_toko')
                     ->label('Nama Toko')
-                    ->placeholder('Mis. Pitstop Mandiri Motor')
+                    ->placeholder('Mis. Pitstop Snack')
                     ->required()
                     ->maxLength(255)
                     ->live(onBlur: true)
@@ -44,7 +44,7 @@ class TokoForm
                             ->map(fn ($w) => mb_convert_case($w, MB_CASE_TITLE, 'UTF-8'))
                             ->implode(' '));
                     })
-                    ->helperText('Nama yang tampil ke pelanggan. Gunakan huruf kapital yang rapi.'),
+                    ->helperText('Nama yang tampil ke admin. Gunakan huruf kapital yang rapi.'),
 
                 // ALAMAT — textarea rapi, auto-size
                 Textarea::make('alamat_toko')
