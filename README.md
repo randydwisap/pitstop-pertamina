@@ -19,17 +19,17 @@
 15. php artisan serve untuk run
 
 
-#untuk php storage link di server
->cd /home/u480825811/domains/pitstoppertamina.com/public_html
->pastikan struktur ada
->mkdir -p storage/app/public
->hapus kalau ada 'public/storage' yang salah (folder/old link)
->rm -rf public/storage
->buat symlink RELATIF: public/storage -> ../storage/app/public
->cd public
->ln -s ../storage/app/public storage
->verifikasi
->ls -l storage
->harus terlihat: storage -> ../storage/app/public
->ini ssh server
->ssh -p 65002 u480825811@46.202.186.223
+# untuk php storage link di server
+1. cd /home/u480825811/domains/pitstoppertamina.com/public_html
+2. pastikan struktur ada
+3. mkdir -p storage/app/public
+4. hapus kalau ada 'public/storage' yang salah (folder/old link)
+5. rm -rf public/storage
+6. buat symlink RELATIF: public/storage -> ../storage/app/public
+7. cd public
+8. ln -s ../storage/app/public storage
+9. verifikasi
+10. ls -l storage
+11. harus terlihat: storage -> ../storage/app/public
+12. ini ssh server
+13. ssh -p 65002 u480825811@46.202.186.223
