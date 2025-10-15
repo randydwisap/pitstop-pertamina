@@ -8,6 +8,7 @@ use App\Filament\Resources\Produks\Pages\ListProduks;
 use App\Filament\Resources\Produks\Schemas\ProdukForm;
 use App\Filament\Resources\Produks\Tables\ProduksTable;
 use App\Models\Produk;
+use App\Models\Toko;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -39,15 +40,23 @@ class ProdukResource extends Resource
     {
         $user = auth()->user();
 
-        // Super admin lihat semua
+        // Super Admin: lihat semua
         if ($user && $user->hasAnyRole(['super_admin', 'Super Admin'])) {
             return parent::getEloquentQuery();
         }
 
-        // Selain itu: hanya yang dimiliki user tsb
-        return parent::getEloquentQuery()->where('user_id', $user?->id ?? 0);
+        // Cek apakah user punya Toko (anggap relasi hasOne: $user->toko())
+        $hasToko = Toko::where('user_id', $user?->id ?? 0)->exists();
+
+        if (! $hasToko) {
+            // Paksa kosong → biar Empty State tampil
+            return parent::getEloquentQuery()->whereRaw('1 = 0');
+        }
+
+        // Filter produk milik user (pakai user_id — kalau kamu pakai toko_id, ganti sesuai skema)
+        return parent::getEloquentQuery()->where('user_id', $user->id);
     }
-    
+
     public static function getRelations(): array
     {
         return [

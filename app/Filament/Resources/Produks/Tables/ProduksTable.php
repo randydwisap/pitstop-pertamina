@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Produks\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Table;
@@ -14,12 +15,16 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Actions\ViewAction;
+use App\Filament\Resources\Tokos\TokoResource;
 use Filament\Tables\Columns\Layout\Panel;
 
 class ProduksTable
 {
     public static function configure(Table $table): Table
     {
+        $user = auth()->user();
+        $hasToko = $user?->toko()->exists() ?? false;
+        $isSuper = $user?->hasAnyRole(['super_admin','Super Admin']) ?? false;
         return $table
             ->columns([
                      Panel::make([
@@ -81,6 +86,17 @@ class ProduksTable
                 '2xl' => 4,
             ])
 
+            ->emptyStateIcon('heroicon-o-building-storefront')
+            ->emptyStateHeading('Wajib membuat toko')
+            ->emptyStateDescription('Untuk mengelola produk, silakan buat toko terlebih dahulu.')
+            ->emptyStateActions([
+                Action::make('buatToko')
+                    ->label('Buat Toko')
+                    ->url(TokoResource::getUrl('create'))
+                    ->color('primary')
+                    ->button()
+                    ->visible(! $isSuper && ! $hasToko),
+            ])
             // NONAKTIFKAN klik-card ke edit
             ->recordUrl(null)
 

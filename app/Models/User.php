@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Filament\Models\Contracts\HasAvatar; 
 use Spatie\Permission\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar
 {
@@ -34,6 +35,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'password',
         'picture'
     ];
+
+        public function toko(): HasOne
+    {
+        return $this->hasOne(Toko::class, 'user_id');
+    }
 
     public function getPictureUrlAttribute(): ?string
     {

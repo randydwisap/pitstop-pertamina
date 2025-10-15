@@ -1,0 +1,16 @@
+# public_html/.htaccess
+Options -Indexes -MultiViews
+DirectoryIndex public/index.php
+
+RewriteEngine On
+RewriteBase /
+
+# Kalau file/dir beneran ada di root, layani apa adanya (mis. .well-known)
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Selain itu, lempar ke /public (internal rewrite, URL tetap bersih)
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]
