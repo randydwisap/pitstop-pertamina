@@ -47,6 +47,7 @@ class PengajuansTable
                         TextColumn::make('spbu.nomor_spbu')
                             ->label('SPBU')
                             ->prefix('SPBU ')
+                            ->weight('semibold')
                             ->icon('heroicon-m-map-pin')
                             ->iconColor('warning'),
 
