@@ -28,6 +28,10 @@ class SpbuResource extends Resource
         return 1;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function getNavigationLabel(): string
     {
         return 'SPBU'; // tampil di menu sidebar

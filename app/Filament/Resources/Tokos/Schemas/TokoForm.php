@@ -23,7 +23,6 @@ class TokoForm
                     ->visibility('public')
                     ->imagePreviewHeight('260')
                     ->imageEditor()
-                    ->panelAspectRatio('16:9')
                     ->panelLayout('compact') // tampil ringkas (kalau tersedia di v4)
                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                     ->maxSize(2048)

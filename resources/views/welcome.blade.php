@@ -496,7 +496,7 @@
               <h1>Kuatkan <span>UMKM Kuliner</span></h1>
               <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium totam rem aperiam.</p>
               <div class="hero-actions justify-content-center justify-content-lg-start">
-                <a href="/dashboard" class="btn-primary scrollto">Daftar sebagai mitra</a>
+                <a href="/dashboard/register" class="btn-primary scrollto">Daftar sebagai mitra</a>
                 {{-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-video d-flex align-items-center">
                   <i class="bi bi-play-fill"></i>
                   <span>Watch Demo</span>
@@ -604,7 +604,7 @@
 
               <!-- CTA Button -->
               <div class="cta-wrapper">
-                <a href="/dashboard" class="btn-cta">
+                <a href="/dashboard/register" class="btn-cta">
                   <span>Daftarkan UMKM anda!</span>
                   <i class="bi bi-arrow-right"></i>
                 </a>

@@ -38,16 +38,16 @@ class TokoResource extends Resource
         return 'Manajemen Toko';
     }
 
-        public static function getEloquentQuery(): Builder
+    public static function getEloquentQuery(): Builder
     {
         $user = auth()->user();
 
-        // Jika user punya izin global (mis. Admin), tampilkan semua.
-        if ($user && $user->can('view_any_toko')) {
+        // Super Admin boleh lihat semua
+        if ($user && $user->hasAnyRole(['super_admin', 'Super Admin'])) {
             return parent::getEloquentQuery();
         }
 
-        // Selain itu, hanya tampilkan toko miliknya.
+        // Selain itu, hanya lihat toko miliknya
         return parent::getEloquentQuery()
             ->where('user_id', $user?->id ?? 0);
     }

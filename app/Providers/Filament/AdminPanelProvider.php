@@ -26,6 +26,8 @@ use Filament\Navigation\MenuItem;
 use App\Filament\Pages\EditMyProfile; 
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
+use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
+use Swis\Filament\Backgrounds\ImageProviders\MyImages;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -37,6 +39,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('dashboard')
             ->brandName('Pitstop Pertamina')
             ->login()
+            ->sidebarFullyCollapsibleOnDesktop()
+            // ->topNavigation() // untuk navbar atas
+            ->spa(hasPrefetching: true)
             ->registration()             
             ->userMenuItems([
                 MenuItem::make()
@@ -78,13 +83,23 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                    FilamentLanguageSwitcherPlugin::make()
-        ->locales([
-            // name & flag opsional — plugin bisa mengenerate otomatis
-            ['code' => 'id', 'name' => 'Bahasa Indonesia', 'flag' => 'id'],
-            ['code' => 'en', 'name' => 'English',           'flag' => 'gb'],
-        ])
-        ->showFlags(true) // atau false kalau mau teks saja
+                FilamentLanguageSwitcherPlugin::make()
+                    ->locales([
+                        ['code' => 'id', 'name' => 'Bahasa Indonesia', 'flag' => 'id'],
+                        ['code' => 'en', 'name' => 'English',           'flag' => 'gb'],
+                    ])
+                    ->showFlags(true),
+
+                // ⬇️ Tambahkan ini
+                FilamentBackgroundsPlugin::make()
+                    // gunakan gambar sendiri dari public/images/auth-backgrounds
+                    ->imageProvider(
+                        MyImages::make()->directory('images\swisnl\filament-backgrounds\triangles')
+                    )
+                    // cache 15 menit supaya ringan
+                    ->remember(900)
+                    // kalau mau sembunyikan atribusi (tidak direkomendasikan kalau lisensinya mewajibkan kredit):
+                    // ->showAttribution(false)
             ])
             ->authMiddleware([
                 Authenticate::class,
