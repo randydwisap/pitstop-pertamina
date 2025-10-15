@@ -2,7 +2,7 @@ name: Deploy to Hostinger via SSH
 
 on:
   push:
-    branches: [ "main" ]   # ganti jika deploy dari branch lain
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -31,6 +31,9 @@ jobs:
           storage/logs/**
           storage/framework/cache/data/**
           storage/*.key
+          # ⬇️ PENTING: simpan file upload di server
+          storage/app/public/**
+          public/storage
           .env
           **/*.env
           EOF
@@ -48,22 +51,28 @@ jobs:
           set -e
           cd ${{ secrets.HOSTINGER_PATH }}
 
-          # OPTIONAL: maintenance mode saat deploy
-          # php artisan down --render="errors::maintenance" || true
-
-          # Install dependencies TANPA composer scripts (hindari pre/post script errors)
+          # Composer tanpa scripts (aman di shared hosting)
           if command -v composer >/dev/null 2>&1; then
             COMPOSER_ALLOW_SUPERUSER=1 COMPOSER_MEMORY_LIMIT=-1 \
             composer install --no-dev --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts
-          else
-            echo "Composer not found on server. Consider building vendor in CI dan upload."
           fi
 
-          # Laravel housekeeping (manual, pengganti composer scripts)
           php artisan package:discover --ansi || true
           php artisan migrate --force || true
 
-          chmod -R 775 storage bootstrap/cache || true
+          # Pastikan symlink storage (tanpa menghapus file upload)
+          mkdir -p storage/app/public
+          [ -L public/storage ] || (cd public && ln -s ../storage/app/public storage)
+          ls -l public/storage || true
 
-          # php artisan up || true
+          php artisan config:clear || true
+          php artisan cache:clear || true
+          php artisan route:clear || true
+          php artisan view:clear || true
+
+          php artisan config:cache || true
+          php artisan route:cache || true
+          php artisan view:cache || true
+
+          chmod -R 775 storage bootstrap/cache || true
           EOF
