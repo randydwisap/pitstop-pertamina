@@ -94,7 +94,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentBackgroundsPlugin::make()
                     // gunakan gambar sendiri dari public/images/auth-backgrounds
                     ->imageProvider(
-                        MyImages::make()->directory('images\swisnl\filament-backgrounds\triangles')
+                        MyImages::make()->directory('images/swisnl/filament-backgrounds/triangles')
                     )
                     // cache 15 menit supaya ringan
                     ->remember(900)
