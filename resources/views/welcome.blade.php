@@ -549,14 +549,14 @@
             }
           </script>
           <div class="swiper-wrapper align-items-center">
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-2.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-3.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-4.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-5.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-6.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-7.webp" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-8.webp" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
           </div>
         </div>
 
