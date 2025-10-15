@@ -17,3 +17,25 @@ Cara Install
 13. php artisan shield:generate --all
 14. php artisan storage:link
 15. php artisan serve untuk run
+
+
+untuk php storage link di server
+cd /home/u480825811/domains/pitstoppertamina.com/public_html
+
+# pastikan struktur ada
+mkdir -p storage/app/public
+
+# hapus kalau ada 'public/storage' yang salah (folder/old link)
+rm -rf public/storage
+
+# buat symlink RELATIF: public/storage -> ../storage/app/public
+cd public
+ln -s ../storage/app/public storage
+
+# verifikasi
+ls -l storage
+# harus terlihat: storage -> ../storage/app/public
+
+
+ini ssh server
+ssh -p 65002 u480825811@46.202.186.223
