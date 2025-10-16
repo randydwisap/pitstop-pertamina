@@ -16,10 +16,11 @@ class Spbu extends Model
         'potensi_konsumen','margin','slot','foto',
     ];
 
-    public function pengajuans(): HasMany
+    public function pengajuans()
     {
-        return $this->hasMany(Pengajuan::class, 'spbu_id');
+        return $this->hasMany(\App\Models\Pengajuan::class);
     }
+    
     protected $casts = [
         'potensi_konsumen' => 'integer',
         'slot'             => 'integer',

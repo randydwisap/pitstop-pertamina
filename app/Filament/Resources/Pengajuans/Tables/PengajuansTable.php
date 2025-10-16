@@ -19,6 +19,8 @@ use Filament\Tables\Columns\Layout\Panel;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\ImageColumn;
 use App\Models\Pengajuan;
+use Illuminate\Support\Facades\Auth;
+
 
 class PengajuansTable
 {
@@ -118,56 +120,49 @@ class PengajuansTable
                     EditAction::make()->hiddenLabel()->color('gray'),
                     DeleteAction::make()->hiddenLabel()->color('gray'),
                     Action::make('approve')
-    ->label('Approve')
-    ->icon('heroicon-m-check-circle')
-    ->color('success')
-    // 1) Sembunyikan tombol saat slot penuh / bukan pending / bukan admin
-    ->visible(function ($record) use ($canApprove) {
-        if (! $canApprove) return false;
-        if ($record->status !== 'pending') return false;
+            ->label('Approve')
+            ->icon('heroicon-m-check-circle')
+            ->color('success')
+            // 1) Sembunyikan tombol saat slot penuh / bukan pending / bukan admin
+            ->visible(function ($record) use ($canApprove) {
+                    if (! $canApprove) return false;
+                    if ($record->status !== 'pending') return false;
 
-        $slot = (int) ($record->spbu?->slot ?? 0);
+                    $slot = (int) ($record->spbu?->slot ?? 0);
 
-        // Hitung kapasitas terpakai berbasis quantity yang SUDAH approved
-        $terpakai = Pengajuan::query()
-            ->where('spbu_id', $record->spbu_id)
-            ->where('status', 'approved')
-            ->sum('quantity'); // kalau 1 pengajuan = 1 slot, ganti ->count()
+                    // 1 pengajuan = 1 slot
+                    $terpakai = \App\Models\Pengajuan::query()
+                        ->where('spbu_id', $record->spbu_id)
+                        ->where('status', 'approved')
+                        ->count();
 
-        // Slot tersisa harus masih cukup untuk quantity pengajuan ini
-        $butuh = (int) ($record->quantity ?? 1);
+                    return $terpakai < $slot;
+                })
+            ->action(function ($record, $livewire) {
+                $slot = (int) ($record->spbu?->slot ?? 0);
 
-        return ($terpakai + $butuh) <= $slot;
-    })
-    ->requiresConfirmation()
-    // 2) Validasi ulang saat dieksekusi (anti race-condition)
-    ->action(function ($record, $livewire) {
-        $slot = (int) ($record->spbu?->slot ?? 0);
+                // Re-check sebelum approve (anti race-condition)
+                $terpakai = \App\Models\Pengajuan::query()
+                    ->where('spbu_id', $record->spbu_id)
+                    ->where('status', 'approved')
+                    ->count();
 
-        $terpakai = Pengajuan::query()
-            ->where('spbu_id', $record->spbu_id)
-            ->where('status', 'approved')
-            ->sum('quantity'); // kalau 1 pengajuan = 1 slot, ganti ->count()
+                if ($terpakai >= $slot) {
+                    $livewire->dispatch('notify', type: 'danger', body: 'Maaf, slot SPBU sudah penuh.');
+                    return;
+                }
 
-        $butuh = (int) ($record->quantity ?? 1);
+                $record->status      = 'approved';
+                $record->approved_by = auth()->id();
+                $record->approved_at = now();
+                $record->save();
 
-        if (($terpakai + $butuh) > $slot) {
-            // Slot penuh → beri pesan dan batalkan
-            $livewire->dispatch('notify', type: 'danger', body: 'Maaf, slot SPBU sudah penuh.');
-            return;
-        }
-
-        // Lolos → setujui
-        $record->status      = 'approved';
-        $record->approved_by = Auth::id();
-        $record->approved_at = now();
-        $record->save();
-
-        $livewire->dispatch('notify', type: 'success', body: 'Pengajuan disetujui.');
-        // refresh tabel biar status langsung berubah
-        $livewire->dispatch('$refresh');
-    }),
-                ])->icon('heroicon-m-ellipsis-vertical')->buttonGroup(),
+                $livewire->dispatch('notify', type: 'success', body: 'Pengajuan disetujui.');
+                $livewire->dispatch('$refresh');
+            })
+            ->requiresConfirmation() ])
+            ->icon('heroicon-m-ellipsis-vertical')
+            ->buttonGroup(),
             ])
             ->recordUrl(null)
             ->defaultSort('created_at','desc');

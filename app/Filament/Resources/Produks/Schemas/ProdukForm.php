@@ -6,6 +6,7 @@ use Filament\Schemas\Schema;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 
 class ProdukForm
 {
@@ -108,6 +109,13 @@ class ProdukForm
                 ->numeric()
                 ->minValue(0)
                 ->step(1),
+
+            Textarea::make('deskripsi')
+                ->label('Deskripsi Produk')
+                ->rows(4)
+                ->autosize()
+                ->maxLength(5000)
+                ->placeholder('Tulis deskripsi singkat produk (bahan, fitur, catatan penting, dll).'),
 
             Select::make('is_active')
                 ->label('Status')

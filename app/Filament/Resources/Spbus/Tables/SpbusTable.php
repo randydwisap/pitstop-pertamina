@@ -21,6 +21,13 @@ class SpbusTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function ($query) {
+                $query->withCount([
+                    'pengajuans as approved_pengajuans_count' => function ($q) {
+                        $q->where('status', 'approved');
+                    },
+                ]);
+            })
             ->columns([
                 Panel::make([
                     // susunan vertikal: gambar → teks
@@ -59,18 +66,26 @@ class SpbusTable
                             ->suffix('%')                      
                             ->size('sm'),
 
-                        // “Available 5/10” — tebal
-                        TextColumn::make('slot')
-                            ->label(' ')
-                            // ->formatStateUsing(function ($v, $record) {
-                            //     // Jika kamu punya kolom total slot (mis. $record->kapasitas_slot), tampilkan “$v/$total”.
-                            //     // Jika tidak, tampilkan “$v/10” sebagai default.
-                            //     $total = $record->kapasitas_slot ?? 10;
-                            //     return 'Available ' . (int) $v . '/' . (int) $total;
-                            // })
-                            ->weight('semibold')
-                            ->prefix('Total Slot ')
-                            ->size('sm'),
+                        TextColumn::make('sisa_slot')
+                    ->label(' ')
+                    ->state(function ($record) {
+                        $total  = (int) $record->slot;
+                        $terpakai = (int) ($record->approved_pengajuans_count ?? 0);
+                        $sisa   = max($total - $terpakai, 0);
+
+                        return "Sisa Slot {$sisa}/{$total}";
+                    })
+                    ->badge()
+                    ->color(function ($record) {
+                        $total  = (int) $record->slot;
+                        $terpakai = (int) ($record->approved_pengajuans_count ?? 0);
+                        $sisa   = max($total - $terpakai, 0);
+
+                        if ($sisa <= 0) return 'danger';         // penuh
+                        if ($sisa <= max(1, floor($total * 0.2))) return 'warning'; // hampir penuh
+                        return 'success';                          // masih banyak
+                    })
+                    ->size('sm'),
 
                         // Spasi kecil lalu kota
                         TextColumn::make('kota')
