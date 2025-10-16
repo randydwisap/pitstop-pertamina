@@ -86,7 +86,6 @@ class SpbusTable
                         return 'success';                          // masih banyak
                     })
                     ->size('sm'),
-
                         // Spasi kecil lalu kota
                         TextColumn::make('kota')
                             ->label(' ')
