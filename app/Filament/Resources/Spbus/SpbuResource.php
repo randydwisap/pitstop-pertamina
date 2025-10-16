@@ -14,13 +14,24 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 
 class SpbuResource extends Resource
 {
     protected static ?string $model = Spbu::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-storefront';
-    protected static string|UnitEnum|null $navigationGroup  = 'Master Data';
+
+       public static function getNavigationGroup(): UnitEnum|string|null
+    {
+        $user = auth()->user();
+
+        if ($user && $user->hasAnyRole(['super_admin', 'Super Admin', 'admin', 'Admin'])) {
+            return 'Master Data';
+        }
+
+        return 'Operasional';
+    }
     protected static ?string $recordTitleAttribute          = 'nomor_spbu';
 
     public static function getNavigationSort(): ?int
@@ -58,7 +69,7 @@ class SpbuResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            \App\Filament\Resources\Spbus\RelationManagers\PengajuansRelationManager::class,
         ];
     }
 

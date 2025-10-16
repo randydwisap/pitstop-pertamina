@@ -16,13 +16,25 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Contracts\Support\Htmlable;
 
 class TokoResource extends Resource
 {
     protected static ?string $model = Toko::class;
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-shopping-bag';
-    protected static string|UnitEnum|null $navigationGroup  = 'Master Data';
+    
+   public static function getNavigationGroup(): UnitEnum|string|null
+    {
+        $user = auth()->user();
+
+        if ($user && $user->hasAnyRole(['super_admin', 'Super Admin', 'admin', 'Admin'])) {
+            return 'Master Data';
+        }
+
+        return 'Management';
+    }
+
     protected static ?string $recordTitleAttribute          = 'nama_toko';
         public static function getNavigationLabel(): string
     {
