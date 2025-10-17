@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use App\Models\Produk;
 use App\Models\Spbu;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 
 
 class PengajuanForm
@@ -40,16 +42,21 @@ Select::make('product_id')
     ->preload()
     ->native(false)
     ->required()
-    ->reactive(), // ⬅️ penting: agar preview update saat dipilih
+    ->reactive()
+    ->afterStateUpdated(function (Set $set) {
+        // produk berubah → kosongkan pilihan SPBU biar filter ulang
+        $set('spbu_id', null);
+    }),
 
-      Select::make('spbu_id')
+Select::make('spbu_id')
     ->label('SPBU')
-    ->relationship(
-        name: 'spbu',
-        titleAttribute: 'nomor_spbu',
-        modifyQueryUsing: function ($query) {
-            // Hanya tampilkan SPBU yang masih punya slot kosong
-            $query->whereRaw("
+    ->options(function (Get $get) {
+        $productId = $get('product_id');
+        $userId    = auth()->id();
+
+        $q = \App\Models\Spbu::query()
+            // 1) SPBU masih punya slot kosong (approved < slot)
+            ->whereRaw("
                 (
                     SELECT COUNT(*)
                     FROM pengajuans
@@ -58,8 +65,26 @@ Select::make('product_id')
                       AND pengajuans.deleted_at IS NULL
                 ) < spbus.slot
             ");
-        },
-    )
+
+        // 2) Jika produk sudah dipilih, sembunyikan SPBU yg SUDAH pernah diajukan (pending) utk produk tsb oleh user ini
+        if ($productId) {
+            $q->whereNotExists(function ($sub) use ($productId, $userId) {
+                $sub->selectRaw(1)
+                    ->from('pengajuans')
+                    ->whereColumn('pengajuans.spbu_id', 'spbus.id')
+                    ->where('pengajuans.product_id', $productId)
+                    ->where('pengajuans.created_by', $userId)
+                    ->where('pengajuans.status', 'pending')
+                    ->whereNull('pengajuans.deleted_at');
+            });
+        }
+
+        return $q->orderBy('nomor_spbu')
+            ->pluck('nomor_spbu', 'id')
+            ->toArray();
+    })
+    ->disabled(fn (Get $get) => ! $get('product_id'))   // wajib pilih produk dulu
+    ->hint(fn (Get $get) => $get('product_id') ? null : 'Pilih produk terlebih dulu')
     ->reactive()
     ->searchable()
     ->preload()
