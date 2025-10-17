@@ -6,6 +6,8 @@ use App\Filament\Resources\Pengajuans\PengajuanResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
+use Illuminate\Validation\ValidationException;
+use App\Models\Pengajuan;
 use Filament\Resources\Pages\EditRecord;
 
 class EditPengajuan extends EditRecord
@@ -21,14 +23,20 @@ class EditPengajuan extends EditRecord
         ];
     }
 
-        protected function mutateFormDataBeforeSave(array $data): array
+     protected function mutateFormDataBeforeSave(array $data): array
     {
-        if (($data['status'] ?? null) === 'approved') {
-            $this->record->approved_by ??= auth()->id();
-            $this->record->approved_at ??= now();
-        } else {
-            $this->record->approved_by = null;
-            $this->record->approved_at = null;
+        // VALIDASI: tetap jaga unique saat edit
+        $exists = Pengajuan::query()
+            ->where('product_id', $data['product_id'] ?? null)
+            ->where('spbu_id', $data['spbu_id'] ?? null)
+            ->where('status', 'pending')
+            ->whereKeyNot($this->record->getKey()) // exclude current record
+            ->exists();
+
+        if ($exists) {
+            throw ValidationException::withMessages([
+                'product_id' => 'Sudah ada pengajuan PENDING untuk produk & SPBU ini.',
+            ]);
         }
 
         return $data;
