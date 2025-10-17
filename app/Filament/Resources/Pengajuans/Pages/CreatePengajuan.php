@@ -12,23 +12,23 @@ class CreatePengajuan extends CreateRecord
     protected static string $resource = PengajuanResource::class;
 
 protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        // Set creator
-        $data['created_by'] = auth()->id();
+{
+    $data['created_by'] = auth()->id(); // WAJIB
 
-        // VALIDASI: hanya 1 pending utk kombinasi (product_id, spbu_id)
-        $exists = Pengajuan::query()
-            ->where('product_id', $data['product_id'] ?? null)
-            ->where('spbu_id', $data['spbu_id'] ?? null)
-            ->where('status', 'pending')
-            ->exists();
+    // Validasi aplikasi (biar UX jelas):
+    $exists = \App\Models\Pengajuan::query()
+        ->where('product_id', $data['product_id'] ?? null)
+        ->where('spbu_id', $data['spbu_id'] ?? null)
+        ->where('created_by', $data['created_by'])
+        ->where('status', 'pending')
+        ->exists();
 
-        if ($exists) {
-            throw ValidationException::withMessages([
-                'product_id' => 'Sudah ada pengajuan PENDING untuk produk & SPBU ini. Silakan tunggu diproses atau ubah pilihan.',
-            ]);
-        }
-
-        return $data;
+    if ($exists) {
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'product_id' => 'Kamu sudah punya 1 pengajuan PENDING untuk Produk & SPBU ini.',
+        ]);
     }
+
+    return $data;
+}
 }
