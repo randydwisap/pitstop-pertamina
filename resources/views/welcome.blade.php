@@ -1183,13 +1183,13 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/features-2.webp" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 1.png" alt="" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-lightning-charge"></i>
                         <div class="card-info">
-                          <span>Speed</span>
-                          <strong>3x Faster</strong>
+                          <span>Mudah & Cepat</span>
+                          <strong> Daftar Mudah & Cepat</strong>
                         </div>
                       </div>
                     </div>
@@ -1213,13 +1213,13 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/features-4.webp" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 2.png" alt="" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-graph-up-arrow"></i>
                         <div class="card-info">
-                          <span>Growth</span>
-                          <strong>+189% ROI</strong>
+                          <span>Data</span>
+                          <strong>Data Statistik Produk Anda</strong>
                         </div>
                       </div>
                     </div>
@@ -1243,13 +1243,13 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/features-1.webp" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 3.png" alt="" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-cpu"></i>
                         <div class="card-info">
-                          <span>Power</span>
-                          <strong>128 Cores</strong>
+                          <span>Transparan</span>
+                          <strong>Slot SPBU Dapat Dilihat</strong>
                         </div>
                       </div>
                     </div>
@@ -1275,13 +1275,13 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/features-5.webp" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 4.png" alt="" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-link-45deg"></i>
                         <div class="card-info">
-                          <span>Connected</span>
-                          <strong>24/7 Sync</strong>
+                          <span> Terhubung</span>
+                          <strong>Terhubung langsung dengan petugas</strong>
                         </div>
                       </div>
                     </div>
