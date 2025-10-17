@@ -87,9 +87,7 @@ class AdminPanelProvider extends PanelProvider
                         ['code' => 'id', 'name' => 'Bahasa Indonesia', 'flag' => 'id'],
                         ['code' => 'en', 'name' => 'English',           'flag' => 'gb'],
                     ])
-                    ->showFlags(true),
-
-                // ⬇️ Tambahkan ini
+                    ->showFlags(true),                
                 FilamentBackgroundsPlugin::make()
                     // gunakan gambar sendiri dari public/images/auth-backgrounds
                     ->imageProvider(

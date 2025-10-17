@@ -25,6 +25,7 @@ class Produk extends Model
         'tinggi_cm',
         'kadaluarsa_nilai',
         'kadaluarsa_satuan',
+        'deskripsi',
     ];
        
     protected $casts = [

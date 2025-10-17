@@ -22,7 +22,7 @@ class SpbuResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-storefront';
 
-       public static function getNavigationGroup(): UnitEnum|string|null
+    public static function getNavigationGroup(): UnitEnum|string|null
     {
         $user = auth()->user();
 
