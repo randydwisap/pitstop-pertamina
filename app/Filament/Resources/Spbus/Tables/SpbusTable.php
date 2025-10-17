@@ -132,89 +132,116 @@ class SpbusTable
                     EditAction::make()->label('Ubah'),
                     DeleteAction::make()->label('Hapus'),
                     // === AJUKAN PRODUK (khusus mitra) ===
-                    Action::make('ajukanProduk')
-                        ->label('Ajukan Produk')
-                        ->icon('heroicon-m-paper-airplane')
-                        ->visible(function ($record) {
-                            $user = auth()->user();
+                   Action::make('ajukanProduk')
+    ->label('Ajukan Produk')
+    ->icon('heroicon-m-paper-airplane')
+    ->visible(function ($record) {
+        $user = auth()->user();
 
-                            // role mitra saja
-                            if (! $user?->hasAnyRole(['mitra', 'Mitra'])) {
-                                return false;
-                            }
+        // hanya role mitra & masih ada sisa slot
+        if (! $user?->hasAnyRole(['mitra', 'Mitra'])) {
+            return false;
+        }
 
-                            // sisa slot > 0
-                            $total = (int) $record->slot;
-                            $terpakai = (int) ($record->approved_pengajuans_count ?? 0);
-                            return ($total - $terpakai) > 0;
-                        })
-                        ->modalHeading(fn ($record) => 'Ajukan Produk ke SPBU ' . ($record->nomor_spbu ?? ''))
-                        ->form([
-                            Select::make('product_id')
-                                ->label('Produk')
-                                ->options(function () {
-                                    $userId = auth()->id();
+        $total     = (int) $record->slot;
+        $terpakai  = (int) ($record->approved_pengajuans_count ?? 0);
 
-                                    return Produk::query()
-                                        ->where('is_active', true)
-                                        ->where('user_id', $userId)
-                                        ->orderBy('nama_produk')
-                                        ->pluck('nama_produk', 'id');
-                                })
-                                ->searchable()
-                                ->preload()
-                                ->native(false)
-                                ->required()
-                                ->helperText('Hanya produk aktif milik Anda yang tampil.'),
+        return ($total - $terpakai) > 0;
+    })
+    ->modalHeading(fn (Spbu $record) => 'Ajukan Produk ke SPBU ' . ($record->nomor_spbu ?? ''))
+    // ⬇️ form pakai closure supaya dapat $record (SPBU yang dipilih)
+    ->form(fn (Spbu $record) => [
+        Select::make('product_id')
+            ->label('Produk')
+            ->options(function () use ($record) {
+                $userId = auth()->id();
 
-                            TextInput::make('quantity')
-                                ->label('Jumlah')
-                                ->numeric()
-                                ->minValue(1)
-                                ->default(1)
-                                ->required(),
+                return Produk::query()
+                    ->where('is_active', true)
+                    ->where('user_id', $userId)
+                    // ⬇️ HANYA produk yang BELUM diajukan ke SPBU ini oleh user
+                    ->whereNotExists(function ($q) use ($record, $userId) {
+                        $q->selectRaw(1)
+                          ->from('pengajuans')
+                          ->whereColumn('pengajuans.product_id', 'produks.id')
+                          ->where('pengajuans.spbu_id', $record->id)
+                          ->where('pengajuans.created_by', $userId)
+                          ->whereNull('pengajuans.deleted_at')
+                          // anggap "pernah diajukan" = ada pengajuan status pending ATAU approved
+                          ->whereIn('pengajuans.status', ['pending', 'approved']);
+                    })
+                    ->orderBy('nama_produk')
+                    ->pluck('nama_produk', 'id');
+            })
+            ->searchable()
+            ->preload()
+            ->native(false)
+            ->required()
+            ->helperText('Hanya produk aktif Anda yang belum diajukan ke SPBU ini.'),
 
-                            Textarea::make('notes')
-                                ->label('Catatan')
-                                ->rows(3)
-                                ->autosize(),
-                        ])
-                        ->action(function ($record, array $data, $livewire) {
-                            // Validasi sederhana: pastikan user punya produk terpilih & aktif
-                            $produk = Produk::query()
-                                ->whereKey($data['product_id'] ?? 0)
-                                ->where('user_id', auth()->id())
-                                ->where('is_active', true)
-                                ->first();
+        TextInput::make('quantity')
+            ->label('Jumlah')
+            ->numeric()
+            ->minValue(1)
+            ->default(1)
+            ->required(),
 
-                            if (! $produk) {
-                                $livewire->dispatch('notify', type: 'danger', body: 'Produk tidak valid / bukan milik Anda.');
-                                return;
-                            }
+        Textarea::make('notes')
+            ->label('Catatan')
+            ->rows(3)
+            ->autosize(),
+    ])
+    ->action(function (Spbu $record, array $data, $livewire) {
+        // validasi produk masih milik user & aktif
+        $produk = Produk::query()
+            ->whereKey($data['product_id'] ?? 0)
+            ->where('user_id', auth()->id())
+            ->where('is_active', true)
+            ->first();
 
-                            // Cek slot SPBU (1 pengajuan = 1 slot)
-                            $slot = (int) ($record->slot ?? 0);
-                            $terpakai = Pengajuan::query()
-                                ->where('spbu_id', $record->id)
-                                ->where('status', 'approved')
-                                ->count();
+        if (! $produk) {
+            $livewire->dispatch('notify', type: 'danger', body: 'Produk tidak valid / bukan milik Anda.');
+            return;
+        }
 
-                            if ($terpakai >= $slot) {
-                                $livewire->dispatch('notify', type: 'danger', body: 'Maaf, slot SPBU ini sudah penuh.');
-                                return;
-                            }
+        // Cek slot SPBU (1 pengajuan = 1 slot)
+        $slot = (int) ($record->slot ?? 0);
+        $terpakai = Pengajuan::query()
+            ->where('spbu_id', $record->id)
+            ->where('status', 'approved')
+            ->count();
 
-                            Pengajuan::create([
-                                'product_id'  => $produk->id,
-                                'spbu_id'     => $record->id,
-                                'status'      => 'pending',
-                                'created_by'  => auth()->id(),
-                                'quantity'    => (int) ($data['quantity'] ?? 1),
-                                'notes'       => $data['notes'] ?? null,
-                            ]);
+        if ($terpakai >= $slot) {
+            $livewire->dispatch('notify', type: 'danger', body: 'Maaf, slot SPBU ini sudah penuh.');
+            return;
+        }
 
-                            $livewire->dispatch('notify', type: 'success', body: 'Pengajuan berhasil dibuat & menunggu persetujuan.');
-                        }),
+        // Cegah duplikat pending/approved ke SPBU yang sama oleh user ini
+        $sudahAda = Pengajuan::query()
+            ->where('product_id', $produk->id)
+            ->where('spbu_id', $record->id)
+            ->where('created_by', auth()->id())
+            ->whereIn('status', ['pending', 'approved'])
+            ->whereNull('deleted_at')
+            ->exists();
+
+        if ($sudahAda) {
+            $livewire->dispatch('notify', type: 'warning', body: 'Produk ini sudah diajukan ke SPBU tersebut.');
+            return;
+        }
+
+        Pengajuan::create([
+            'product_id' => $produk->id,
+            'spbu_id'    => $record->id,
+            'status'     => 'pending',
+            'created_by' => auth()->id(),
+            'quantity'   => (int) ($data['quantity'] ?? 1),
+            'notes'      => $data['notes'] ?? null,
+        ]);
+
+        $livewire->dispatch('notify', type: 'success', body: 'Pengajuan berhasil dibuat & menunggu persetujuan.');
+        $livewire->dispatch('$refresh');
+    }),
                 ])->icon('heroicon-m-ellipsis-vertical'),
             ])
             ->toolbarActions([
