@@ -1,16 +1,13 @@
 <x-filament-panels::page>
     <x-filament::section>
-        <form id="edit-profile-form" wire:submit.prevent="save" class="space-y-6">
+        <form wire:submit.prevent="save" class="space-y-6">
             {{ $this->form }}
-        </form>
 
-        {{-- Footer bawaan section -> spacing & border-nya otomatis rapi --}}
-        <x-slot name="footer">
-            <div class="ml-auto">
-                <x-filament::button type="submit" form="edit-profile-form">
+            <div class="flex justify-end pt-4 border-t mt-6">
+                <x-filament::button type="submit">
                     Simpan Perubahan
                 </x-filament::button>
             </div>
-        </x-slot>
+        </form>
     </x-filament::section>
 </x-filament-panels::page>

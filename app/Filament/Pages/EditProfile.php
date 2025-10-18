@@ -100,37 +100,53 @@ class EditMyProfile extends Page implements HasForms
     }
 
     public function save(): void
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        $this->validate([
-            'data.name'  => ['required', 'string', 'max:255'],
-            'data.email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
-        ]);
+    $this->validate([
+        'data.name'  => ['required', 'string', 'max:255'],
+        'data.email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+    ]);
 
-        $data = $this->data;
+    $data = $this->data;
+    $passwordChanged = false;
 
-        $user->name    = $data['name'] ?? $user->name;
-        $user->email   = $data['email'] ?? $user->email;
-        $user->picture = $data['picture'] ?? $user->picture; // sekarang pasti string path (mis. "avatars/xxx.jpg")
+    $user->name = $data['name'] ?? $user->name;
+    $user->email = $data['email'] ?? $user->email;
 
-        if (! empty($data['new_password'])) {
-            if (empty($data['current_password']) || ! Hash::check($data['current_password'], $user->password)) {
-                $this->addError('data.current_password', 'Password saat ini salah.');
-                return;
-            }
-            $user->password = Hash::make($data['new_password']);
+    // Handle foto profil
+    $picture = $data['picture'] ?? null;
+    if (is_array($picture)) {
+        $first = array_values($picture)[0] ?? null;
+        $picture = is_array($first) ? ($first['path'] ?? $first['name'] ?? null) : $first;
+    }
+    $user->picture = $picture;
+
+    // Handle perubahan password
+    if (! empty($data['new_password'])) {
+        if (empty($data['current_password']) || ! Hash::check($data['current_password'], $user->password)) {
+            $this->addError('data.current_password', 'Password saat ini salah.');
+            return;
         }
 
-        $picture = $data['picture'] ?? null;
-if (is_array($picture)) {
-    $first = array_values($picture)[0] ?? null;
-    $picture = is_array($first) ? ($first['path'] ?? $first['name'] ?? null) : $first;
-}
-$user->picture = $picture;
-        $user->save();
+        $user->password = Hash::make($data['new_password']);
+        $passwordChanged = true;
+    }
 
-        // === Logout & redirect ke halaman login panel ===
+    $user->save();
+
+    // === Kirim ulang verifikasi email jika email diubah ===
+    if (
+        $user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&
+        $user->isDirty('email')
+    ) {
+        $user->email_verified_at = null;
+        $user->save(); // simpan lagi perubahan verifikasi
+        $user->sendEmailVerificationNotification();
+    }
+
+    // === Logout hanya jika password berubah ===
+    if ($passwordChanged) {
         $panel = Filament::getCurrentPanel();
         $loginUrl = $panel?->getLoginUrl() ?? route('login');
 
@@ -138,7 +154,11 @@ $user->picture = $picture;
         request()->session()->invalidate();
         request()->session()->regenerateToken();
 
-        // navigate:true biar SPA Filament pindah halaman
         $this->redirect($loginUrl, navigate: true);
+    } else {
+        // Tampilkan notifikasi berhasil (opsional)
+        $this->notify('success', 'Profil berhasil diperbarui.');
     }
+}
+
 }

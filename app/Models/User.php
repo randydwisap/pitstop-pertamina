@@ -14,8 +14,10 @@ use Filament\Models\Contracts\HasAvatar;
 use Spatie\Permission\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Notifications\CustomVerifyEmail; // Pastikan import di atas file
 
-class User extends Authenticatable implements FilamentUser, HasAvatar
+
+class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -35,6 +37,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         'password',
         'picture'
     ];
+
+    // custom email verif
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new CustomVerifyEmail);
+    }
+
 
     public function toko(): HasOne
     {

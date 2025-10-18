@@ -101,6 +101,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 EnsureEmailIsVerified::class,
-            ]);
+            ])
+            ->passwordReset()
+            ->emailVerification()
+            ;
     }
 }
