@@ -23,7 +23,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\View\PanelsRenderHook;
 use CraftForge\FilamentLanguageSwitcher\FilamentLanguageSwitcherPlugin;
 use Filament\Navigation\MenuItem;
-use App\Filament\Pages\EditMyProfile; 
+use App\Filament\Pages\EditProfile; 
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label('Profile')
                     ->icon('heroicon-m-user-circle')
-                    ->url(fn (): string => EditMyProfile::getUrl()),
+                    ->url(fn (): string => EditProfile::getUrl()),
             ])
             ->colors([
                 'primary' => Color::Blue,
@@ -56,7 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
-                EditMyProfile::class,
+                EditProfile::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([

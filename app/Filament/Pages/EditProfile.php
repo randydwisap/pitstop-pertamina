@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Filament\Facades\Filament;
 
-class EditMyProfile extends Page implements HasForms
+class EditProfile  extends Page implements HasForms
 {
     use InteractsWithForms;
 
