@@ -104,6 +104,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->passwordReset()
             ->emailVerification()
+            
             ;
     }
 }

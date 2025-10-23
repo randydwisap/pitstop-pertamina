@@ -14,7 +14,9 @@ use Filament\Models\Contracts\HasAvatar;
 use Spatie\Permission\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Notifications\CustomVerifyEmail; // Pastikan import di atas file
+use App\Notifications\CustomVerifyEmail; 
+use App\Notifications\CustomResetPasswordNotification;
+use App\Filament\Notifications\CustomFilamentResetPassword;
 
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
@@ -45,6 +47,13 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
         $this->notify(new CustomVerifyEmail);
     }
 
+    // Custom reset password
+
+
+        public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomFilamentResetPassword($token));
+    }
 
     public function toko(): HasOne
     {
