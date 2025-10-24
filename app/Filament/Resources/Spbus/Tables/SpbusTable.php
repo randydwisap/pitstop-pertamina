@@ -243,11 +243,6 @@ class SpbusTable
         $livewire->dispatch('$refresh');
     }),
                 ])->icon('heroicon-m-ellipsis-vertical'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }
