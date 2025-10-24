@@ -38,6 +38,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->brandName('Pitstop Pertamina')
+            ->favicon(asset('favicon.png'))
             ->login()
             ->sidebarFullyCollapsibleOnDesktop()
             // ->topNavigation() // untuk navbar atas
