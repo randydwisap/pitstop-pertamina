@@ -41,6 +41,7 @@ class PengajuansRelationManager extends RelationManager
                     titleAttribute: 'nama_produk',
                     modifyQueryUsing: function ($query) {
                         $user = auth()->user();
+                        $spbu = $this->ownerRecord; // SPBU yang sedang dibuka
 
                         // hanya produk aktif
                         $query->where('is_active', true);
@@ -49,12 +50,21 @@ class PengajuansRelationManager extends RelationManager
                         if (! $user?->hasAnyRole(['super_admin', 'Super Admin'])) {
                             $query->where('user_id', $user?->id ?? 0);
                         }
+
+                        // ⛔️ filter agar tidak muncul produk yang sudah diajukan ke SPBU ini
+                        $query->whereNotIn('id', function ($sub) use ($spbu) {
+                            $sub->select('product_id')
+                                ->from('pengajuans')
+                                ->where('spbu_id', $spbu->id)
+                                ->whereNull('deleted_at'); // abaikan yang di-soft delete
+                        });
                     }
                 )
                 ->searchable()
                 ->preload()
                 ->native(false)
                 ->required(),
+
 
             TextInput::make('quantity')
                 ->label('Jumlah')
