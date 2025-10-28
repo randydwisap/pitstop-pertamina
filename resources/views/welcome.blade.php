@@ -1339,7 +1339,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/person-m-12.webp" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1365,7 +1365,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/person-m-12.webp" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1391,7 +1391,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/person-m-12.webp" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1417,7 +1417,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/person-m-12.webp" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1443,7 +1443,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/person-m-12.webp" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
