@@ -37,8 +37,8 @@
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-<a href="index.html" class="logo d-flex align-items-center">
-  <img src="images/logo.png" alt="">
+<a href="" class="logo d-flex align-items-center">
+  <img src="images/logo.png" alt="Pitstop by Pertamina">
   {{-- <h1 class="sitename ms-2">Pitstop by Pertamina</h1> --}}
 </a>
 
@@ -496,7 +496,7 @@
               <h1>Kuatkan <span>UMKM Kuliner</span></h1>
               <p>Permudah operasional, perluas jangkauan, dan percepat omzet dengan alat yang ramah UMKM.</p>
               <div class="hero-actions justify-content-center justify-content-lg-start">
-                <a href="/dashboard/register" class="btn-primary scrollto">Daftar sebagai mitra</a>
+                <a href="/dashboard/" class="btn-primary scrollto">Daftar sebagai mitra</a>
                 {{-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-video d-flex align-items-center">
                   <i class="bi bi-play-fill"></i>
                   <span>Watch Demo</span>
@@ -506,7 +506,7 @@
           </div>
           <div class="col-lg-6">
             <div class="hero-image">
-              <img src="assets/img/illustration/illustration-29.png" class="img-fluid floating" alt="">
+              <img src="assets/img/illustration/illustration-29.png" class="img-fluid floating" alt="Pitstop by Pertamina">
             </div>
           </div>
         </div>
@@ -549,14 +549,14 @@
             }
           </script>
           <div class="swiper-wrapper align-items-center">
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
+            <div class="swiper-slide"><img src="assets/img/clients/clients-1.jpg" class="img-fluid" alt="Pitstop by Pertamina"></div>
           </div>
         </div>
 
@@ -574,7 +574,7 @@
           <!-- Image Column -->
           <div class="col-lg-6">
             <div class="about-image">
-              <img src="assets/img/about/Patra-UMKM-Batu.jpg" alt="About" class="img-fluid">
+              <img src="assets/img/about/Patra-UMKM-Batu.jpg" alt="Pitstop by Pertamina" class="img-fluid">
             </div>
           </div>
 
@@ -604,7 +604,7 @@
 
               <!-- CTA Button -->
               <div class="cta-wrapper">
-                <a href="/dashboard/register" class="btn-cta">
+                <a href="/dashboard" class="btn-cta">
                   <span>Daftarkan UMKM anda!</span>
                   <i class="bi bi-arrow-right"></i>
                 </a>
@@ -751,7 +751,7 @@
               </div>
             </div>
             <div class="image-container">
-              <img src="assets/img/illustration/illustration-14.webp" alt="Streamlined Workflow" class="img-fluid">
+              <img src="assets/img/illustration/illustration-14.webp" alt="Pitstop by Pertamina" class="img-fluid">
             </div>
           </div>
 
@@ -778,7 +778,7 @@
               </div>
             </div>
             <div class="image-container">
-              <img src="assets/img/illustration/illustration-6.webp" alt="Performance Analytics" class="img-fluid">
+              <img src="assets/img/illustration/illustration-6.webp" alt="Pitstop by Pertamina" class="img-fluid">
             </div>
           </div>
 
@@ -805,7 +805,7 @@
               </div>
             </div>
             <div class="image-container">
-              <img src="assets/img/illustration/illustration-7.webp" alt="Security Framework" class="img-fluid">
+              <img src="assets/img/illustration/illustration-7.webp" alt="Pitstop by Pertamina" class="img-fluid">
             </div>
           </div>
 
@@ -832,7 +832,7 @@
               </div>
             </div>
             <div class="image-container">
-              <img src="assets/img/illustration/illustration-8.webp" alt="Team Environment" class="img-fluid">
+              <img src="assets/img/illustration/illustration-8.webp" alt="Pitstop by Pertamina" class="img-fluid">
             </div>
           </div>
         </div>
@@ -1213,7 +1213,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/image 2.png" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 2.png" alt="Pitstop by Pertamina" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-graph-up-arrow"></i>
@@ -1243,7 +1243,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/image 3.png" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 3.png" alt="Pitstop by Pertamina" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-cpu"></i>
@@ -1275,7 +1275,7 @@
                 </div>
                 <div class="col-lg-6">
                   <div class="visual-content">
-                    <img src="assets/img/features/image 4.png" alt="" class="img-fluid">
+                    <img src="assets/img/features/image 4.png" alt="Pitstop by Pertamina" class="img-fluid">
                     <div class="floating-element">
                       <div class="floating-card">
                         <i class="bi bi-link-45deg"></i>
@@ -1339,7 +1339,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/person-f-12.webp" alt="Client" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1365,7 +1365,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/person-m-8.webp" alt="Client" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1391,7 +1391,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/person-f-6.webp" alt="Client" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1417,7 +1417,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/person-m-12.webp" alt="Client" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
@@ -1443,7 +1443,7 @@
             <div class="swiper-slide">
               <div class="testimonial-item">
                 <div class="testimonial-header">
-                  <img src="assets/img/person/person-f-10.webp" alt="Client" class="img-fluid" loading="lazy">
+                  <img src="assets/img/person/habib.jpeg" alt="Pitstop by Pertamina" class="img-fluid" loading="lazy">
                   <div class="rating">
                     <i class="bi bi-star-fill"></i>
                     <i class="bi bi-star-fill"></i>
