@@ -52,7 +52,140 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->colors([
                 'primary' => Color::Blue,
-            ])
+            ]) 
+             ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn () => view('auth.login-extra'))
+        // SEMBUNYIKAN baris subheading (“or …”) di semua layout (page & simple)
+      ->renderHook(PanelsRenderHook::STYLES_AFTER, function () {
+    $loginPath    = parse_url(route('filament.dashboard.auth.login',    [], false), PHP_URL_PATH);
+    $registerPath = parse_url(route('filament.dashboard.auth.register', [], false), PHP_URL_PATH);
+
+    $loginJson    = json_encode($loginPath ?? '/dashboard/login');
+    $registerJson = json_encode($registerPath ?? '/dashboard/register');
+
+    return new HtmlString(<<<HTML
+<style>
+/* Sembunyikan subheading default (“or …”) pada login & register */
+body[data-auth-page="login"] .fi-auth-card header h1 + *,
+body[data-auth-page="login"] .fi-simple-main header h1 + *,
+body[data-auth-page="register"] .fi-auth-card header h1 + *,
+body[data-auth-page="register"] .fi-simple-main header h1 + * {
+  display: none !important;
+}
+
+/* CTA footer (pusat) */
+.auth-footer-wrap{ display:flex; justify-content:center; width:100%; margin-top:1rem; }
+.auth-footer-row{ margin:0 auto; text-align:center; font-size:.875rem; color:rgb(75 85 99); }
+.auth-footer-link{ color:rgb(37 99 235); text-decoration:underline; }
+.auth-footer-link:hover{ text-decoration:none; }
+</style>
+
+<script>
+(function () {
+  var LOGIN_PATH    = $loginJson;
+  var REGISTER_PATH = $registerJson;
+
+  function pageKind() {
+    if (location.pathname === LOGIN_PATH) return 'login';
+    if (location.pathname === REGISTER_PATH) return 'register';
+    return 'other';
+  }
+
+  function setHeading() {
+    var h1 = document.querySelector('.fi-auth-card header h1, .fi-simple-main header h1');
+    if (!h1) return;
+    var kind = pageKind();
+    if (kind === 'login')    h1.textContent = 'Masuk';
+    if (kind === 'register') h1.textContent = 'Daftar';
+  }
+
+  function removeSubheading() {
+    // Hapus subheading default pada login & register
+    var sub = document.querySelector('.fi-auth-card header h1 + *, .fi-simple-main header h1 + *');
+    if (sub) sub.remove();
+  }
+
+  function ensureFooter() {
+    var kind = pageKind();
+    if (kind !== 'login' && kind !== 'register') return;
+
+    // Root kartu auth
+    var card = document.querySelector('.fi-auth-card, .fi-simple-main');
+    if (!card) return;
+
+    // Hindari duplikasi
+    var old = card.querySelector('.auth-footer-wrap');
+    if (old) old.remove();
+
+    // Tentukan teks & link
+    var text, linkText, href;
+    if (kind === 'login') {
+      text = 'Belum punya akun?';
+      linkText = 'Buat akun baru';
+      href = REGISTER_PATH;
+    } else {
+      text = 'Sudah punya akun?';
+      linkText = 'Masuk sini';
+      href = LOGIN_PATH;
+    }
+
+    // Buat elemen
+    var wrap = document.createElement('div');
+    wrap.className = 'auth-footer-wrap';
+    wrap.innerHTML =
+      '<p class="auth-footer-row">' +
+        text + ' ' +
+        '<a class="auth-footer-link" href="' + href + '">' + linkText + '</a>' +
+      '</p>';
+
+    // Sisipkan setelah <form>
+    var form = card.querySelector('form');
+    if (form && form.parentNode) {
+      form.parentNode.appendChild(wrap);
+    } else {
+      card.appendChild(wrap);
+    }
+  }
+
+  function stampBody() {
+    document.body.setAttribute('data-auth-page', pageKind());
+  }
+
+  function run() {
+    stampBody();
+    setHeading();
+    removeSubheading();
+    ensureFooter();
+  }
+
+  // Initial run
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+
+  // Amati perubahan DOM di kartu auth (untuk Livewire)
+  var root = document.querySelector('.fi-auth-card, .fi-simple-main');
+  if (root) {
+    var mo = new MutationObserver(run);
+    mo.observe(root, { childList: true, subtree: true });
+  }
+
+  // Deteksi navigasi SPA-like
+  var lastPath = location.pathname;
+  setInterval(function () {
+    if (location.pathname !== lastPath) {
+      lastPath = location.pathname;
+      run();
+    }
+  }, 300);
+
+  // Livewire route changes
+  window.addEventListener('livewire:navigated', run);
+})();
+</script>
+HTML);
+})
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
