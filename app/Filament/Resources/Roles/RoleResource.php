@@ -47,7 +47,7 @@ class RoleResource extends Resource
     }
     public static function getNavigationSort(): ?int
     {
-        return 20; //urutan
+        return 100; //urutan
     }
 
     public static function form(Schema $schema): Schema

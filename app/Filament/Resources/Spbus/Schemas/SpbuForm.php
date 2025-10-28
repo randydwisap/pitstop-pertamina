@@ -37,12 +37,13 @@ class SpbuForm
             Select::make('tipe')
                 ->label('Tipe SPBU')
                 ->options([
-                    'internal'  => 'Internal',
-                    'eksternal' => 'Eksternal',
+                    'coco'  => 'COCO',
+                    'dodo' => 'DODO',
+                    'codo' => 'CODO',
                 ])
                 ->native(false)   // dropdown modern
                 ->searchable()
-                ->default('internal')
+                ->default('coco')
                 ->required(),       
 
             Select::make('kota')

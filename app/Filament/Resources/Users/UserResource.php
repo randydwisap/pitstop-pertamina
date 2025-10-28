@@ -25,6 +25,18 @@ class UserResource extends Resource
     // ubah tipenya ke string|UnitEnum|null
     protected static string|UnitEnum|null $navigationGroup = 'Management';
 
+        public static function getNavigationSort(): ?int
+    {
+        $user = auth()->user();
+
+        // Saat MITRA, Toko muncul paling atas (mis. 10)
+        if ($user && $user->hasAnyRole(['mitra', 'Mitra'])) {
+            return 50;
+        }
+
+        // Selain mitra, posisikan biasa (mis. 50)
+        return 100;
+    }
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

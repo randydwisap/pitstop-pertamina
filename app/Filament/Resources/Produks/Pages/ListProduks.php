@@ -19,6 +19,8 @@ protected function getHeaderActions(): array
         return [
             CreateAction::make()
                 ->visible($isSuper || $hasToko)
+                ->label('Buat Produk')
+                ->icon('heroicon-m-plus')
                 ->mutateFormDataUsing(function (array $data) use ($user) {
                     // auto isi pemilik
                     $data['user_id'] = $user->id;

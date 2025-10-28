@@ -22,9 +22,33 @@ class ProdukResource extends Resource
     protected static ?string $model = Produk::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCube;
-    protected static string|UnitEnum|null $navigationGroup  = 'Master Data';
+    
     protected static ?string $modelLabel = 'Produk';
     protected static ?string $pluralModelLabel = 'Produk';
+
+    public static function getNavigationGroup(): UnitEnum|string|null
+    {
+        $user = auth()->user();
+
+        if ($user && $user->hasAnyRole(['super_admin', 'Super Admin', 'admin', 'Admin'])) {
+            return 'Master Data';
+        }
+
+        return 'Management';
+    }
+
+    public static function getNavigationSort(): ?int
+    {
+        $user = auth()->user();
+
+        // Saat MITRA, Toko muncul paling atas (mis. 10)
+        if ($user && $user->hasAnyRole(['mitra', 'Mitra'])) {
+            return 2;
+        }
+
+        // Selain mitra, posisikan biasa (mis. 50)
+        return 50;
+    }
 
     public static function form(Schema $schema): Schema
     {

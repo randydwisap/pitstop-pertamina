@@ -36,7 +36,7 @@ class SpbuResource extends Resource
 
     public static function getNavigationSort(): ?int
     {
-        return 1;
+        return 4;
     }
 
     public static function getNavigationBadge(): ?string
@@ -45,16 +45,16 @@ class SpbuResource extends Resource
     }
     public static function getNavigationLabel(): string
     {
-        return 'SPBU'; // tampil di menu sidebar
+        return 'List SPBU'; // tampil di menu sidebar
     }
     public static function getModelLabel(): string
     {
-        return 'SPBU';
+        return 'List SPBU';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'SPBU';
+        return 'List SPBU';
     }
     public static function form(Schema $schema): Schema
     {

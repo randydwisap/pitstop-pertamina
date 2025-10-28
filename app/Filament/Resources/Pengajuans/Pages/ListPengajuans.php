@@ -13,7 +13,9 @@ class ListPengajuans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()
+                ->label('Buat Pengajuan')
+                ->icon('heroicon-m-plus'),
         ];
     }
      public function getTitle(): string

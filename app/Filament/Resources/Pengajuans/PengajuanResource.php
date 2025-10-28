@@ -26,6 +26,19 @@ class PengajuanResource extends Resource
     protected static ?string $modelLabel = 'Pengajuan';
     protected static ?string $pluralModelLabel = 'Pengajuan';
 
+        public static function getNavigationSort(): ?int
+    {
+        $user = auth()->user();
+
+        // Saat MITRA, Toko muncul paling atas (mis. 10)
+        if ($user && $user->hasAnyRole(['mitra', 'Mitra'])) {
+            return 3;
+        }
+
+        // Selain mitra, posisikan biasa (mis. 50)
+        return 1;
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PengajuanForm::configure($schema);

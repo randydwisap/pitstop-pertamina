@@ -35,6 +35,19 @@ class TokoResource extends Resource
         return 'Management';
     }
 
+    public static function getNavigationSort(): ?int
+    {
+        $user = auth()->user();
+
+        // Saat MITRA, Toko muncul paling atas (mis. 10)
+        if ($user && $user->hasAnyRole(['mitra', 'Mitra'])) {
+            return 1;
+        }
+
+        // Selain mitra, posisikan biasa (mis. 50)
+        return 50;
+    }
+
     protected static ?string $recordTitleAttribute          = 'nama_toko';
         public static function getNavigationLabel(): string
     {
