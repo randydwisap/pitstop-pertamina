@@ -57,26 +57,7 @@ class PengajuansTable
                             ->label('Jumlah')
                             ->icon('heroicon-m-shopping-bag')
                             ->suffix(' pcs')
-                            ->iconColor('gray'),
-
-                       TextColumn::make('status')
-                            ->label('Status')
-                            ->formatStateUsing(fn (?string $state) => $state ? ucfirst($state) : '-') // tampilkan "Approved/Pending"
-                            ->color(fn (?string $state): string => match ($state) {
-                                'approved' => 'success',
-                                'pending'  => 'warning',
-                                default    => 'gray',
-                            })
-                            ->icon(fn (?string $state): ?string => match ($state) {
-                                'approved' => 'heroicon-m-check-badge',
-                                'pending'  => 'heroicon-m-clock',
-                                default    => 'heroicon-m-question-mark-circle',
-                            })
-                            ->iconColor(fn (?string $state): string => match ($state) {
-                                'approved' => 'success',
-                                'pending'  => 'warning',
-                                default    => 'gray',
-                            }),
+                            ->iconColor('gray'),                       
 
                         TextColumn::make('product.toko.nama_toko')
                             ->label('Toko')
@@ -99,6 +80,27 @@ class PengajuansTable
                             ->icon('heroicon-m-calendar-days')
                             ->iconColor('success')
                             ->toggleable(isToggledHiddenByDefault: true),
+
+                            TextColumn::make('status')
+                            ->label('Status')
+                            ->weight('semibold')
+                            ->badge()
+                            ->formatStateUsing(fn (?string $state) => $state ? ucfirst($state) : '-') // tampilkan "Approved/Pending"
+                            ->color(fn (?string $state): string => match ($state) {
+                                'approved' => 'success',
+                                'pending'  => 'warning',
+                                default    => 'gray',
+                            })
+                            ->icon(fn (?string $state): ?string => match ($state) {
+                                'approved' => 'heroicon-m-check-badge',
+                                'pending'  => 'heroicon-m-clock',
+                                default    => 'heroicon-m-question-mark-circle',
+                            })
+                            ->iconColor(fn (?string $state): string => match ($state) {
+                                'approved' => 'success',
+                                'pending'  => 'warning',
+                                default    => 'gray',
+                            }),
                     ])->space(0),
                 ])->extraAttributes([
                     'class' => 'p-3 rounded-lg border border-emerald-300/80 bg-white shadow-sm overflow-hidden h-full',
