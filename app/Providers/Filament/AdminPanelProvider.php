@@ -215,13 +215,7 @@ HTML);
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
-                FilamentLanguageSwitcherPlugin::make()
-                    ->locales([
-                        ['code' => 'id', 'name' => 'Bahasa Indonesia', 'flag' => 'id'],
-                        ['code' => 'en', 'name' => 'English',           'flag' => 'gb'],
-                    ])
-                    ->showFlags(true),                
+                FilamentShieldPlugin::make(),                              
                 FilamentBackgroundsPlugin::make()
                     // gunakan gambar sendiri dari public/images/auth-backgrounds
                     ->imageProvider(
