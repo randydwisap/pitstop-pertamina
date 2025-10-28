@@ -56,21 +56,17 @@ class AdminPanelProvider extends PanelProvider
              ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn () => view('auth.login-extra'))
         // SEMBUNYIKAN baris subheading (“or …”) di semua layout (page & simple)
       ->renderHook(PanelsRenderHook::STYLES_AFTER, function () {
+    // Path relatif dari Filament (tanpa host). Ini aman, tapi nanti kita normalisasi di JS.
     $loginPath    = parse_url(route('filament.dashboard.auth.login',    [], false), PHP_URL_PATH);
     $registerPath = parse_url(route('filament.dashboard.auth.register', [], false), PHP_URL_PATH);
 
-    $loginJson    = json_encode($loginPath ?? '/dashboard/login');
-    $registerJson = json_encode($registerPath ?? '/dashboard/register');
+    $loginJson    = json_encode($loginPath);
+    $registerJson = json_encode($registerPath);
 
     return new HtmlString(<<<HTML
 <style>
-/* Sembunyikan subheading default (“or …”) pada login & register */
-body[data-auth-page="login"] .fi-auth-card header h1 + *,
-body[data-auth-page="login"] .fi-simple-main header h1 + *,
-body[data-auth-page="register"] .fi-auth-card header h1 + *,
-body[data-auth-page="register"] .fi-simple-main header h1 + * {
-  display: none !important;
-}
+/* Sembunyikan subheading default “or …” DI MANA PUN */
+.fi-auth-card header h1 + *, .fi-simple-main header h1 + * { display: none !important; }
 
 /* CTA footer (pusat) */
 .auth-footer-wrap{ display:flex; justify-content:center; width:100%; margin-top:1rem; }
@@ -81,12 +77,19 @@ body[data-auth-page="register"] .fi-simple-main header h1 + * {
 
 <script>
 (function () {
-  var LOGIN_PATH    = $loginJson;
-  var REGISTER_PATH = $registerJson;
+  var LOGIN_PATH    = $loginJson;     // ex: "/dashboard/login"
+  var REGISTER_PATH = $registerJson;  // ex: "/dashboard/register"
+
+  // Normalisasi pathname: buang prefix "/public" jika ada
+  function normalizedPathname() {
+    var p = location.pathname || '/';
+    return p.replace(/^\\/public(?![^/])|^\\/public\\//, '/');
+  }
 
   function pageKind() {
-    if (location.pathname === LOGIN_PATH) return 'login';
-    if (location.pathname === REGISTER_PATH) return 'register';
+    var p = normalizedPathname();
+    if (p.startsWith(LOGIN_PATH))    return 'login';
+    if (p.startsWith(REGISTER_PATH)) return 'register';
     return 'other';
   }
 
@@ -98,25 +101,16 @@ body[data-auth-page="register"] .fi-simple-main header h1 + * {
     if (kind === 'register') h1.textContent = 'Daftar';
   }
 
-  function removeSubheading() {
-    // Hapus subheading default pada login & register
-    var sub = document.querySelector('.fi-auth-card header h1 + *, .fi-simple-main header h1 + *');
-    if (sub) sub.remove();
-  }
-
   function ensureFooter() {
     var kind = pageKind();
     if (kind !== 'login' && kind !== 'register') return;
 
-    // Root kartu auth
     var card = document.querySelector('.fi-auth-card, .fi-simple-main');
     if (!card) return;
 
-    // Hindari duplikasi
     var old = card.querySelector('.auth-footer-wrap');
     if (old) old.remove();
 
-    // Tentukan teks & link
     var text, linkText, href;
     if (kind === 'login') {
       text = 'Belum punya akun?';
@@ -128,7 +122,6 @@ body[data-auth-page="register"] .fi-simple-main header h1 + * {
       href = LOGIN_PATH;
     }
 
-    // Buat elemen
     var wrap = document.createElement('div');
     wrap.className = 'auth-footer-wrap';
     wrap.innerHTML =
@@ -137,51 +130,23 @@ body[data-auth-page="register"] .fi-simple-main header h1 + * {
         '<a class="auth-footer-link" href="' + href + '">' + linkText + '</a>' +
       '</p>';
 
-    // Sisipkan setelah <form>
     var form = card.querySelector('form');
-    if (form && form.parentNode) {
-      form.parentNode.appendChild(wrap);
-    } else {
-      card.appendChild(wrap);
-    }
-  }
-
-  function stampBody() {
-    document.body.setAttribute('data-auth-page', pageKind());
+    (form && form.parentNode ? form.parentNode : card).appendChild(wrap);
   }
 
   function run() {
-    stampBody();
-    setHeading();
-    removeSubheading();
-    ensureFooter();
+    setHeading();      // ganti "Sign in" ↔ "Sign up"
+    ensureFooter();    // pasang CTA bawah & pusatkan
+    // Subheading default sudah dihilangkan via CSS global di atas.
   }
 
-  // Initial run
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
-    run();
-  }
-
-  // Amati perubahan DOM di kartu auth (untuk Livewire)
-  var root = document.querySelector('.fi-auth-card, .fi-simple-main');
-  if (root) {
-    var mo = new MutationObserver(run);
-    mo.observe(root, { childList: true, subtree: true });
-  }
-
-  // Deteksi navigasi SPA-like
-  var lastPath = location.pathname;
-  setInterval(function () {
-    if (location.pathname !== lastPath) {
-      lastPath = location.pathname;
-      run();
-    }
-  }, 300);
-
-  // Livewire route changes
+  // Initial + navigasi Livewire/SPA
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
   window.addEventListener('livewire:navigated', run);
+  var root = document.querySelector('.fi-auth-card, .fi-simple-main');
+  if (root) new MutationObserver(run).observe(root, { childList: true, subtree: true });
+  var last = location.pathname;
+  setInterval(function(){ if (location.pathname !== last) { last = location.pathname; run(); } }, 300);
 })();
 </script>
 HTML);
