@@ -53,104 +53,104 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ]) 
-             ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn () => view('auth.login-extra'))
-        // SEMBUNYIKAN baris subheading (“or …”) di semua layout (page & simple)
-      ->renderHook(PanelsRenderHook::STYLES_AFTER, function () {
-    // Path relatif dari Filament (tanpa host). Ini aman, tapi nanti kita normalisasi di JS.
-    $loginPath    = parse_url(route('filament.dashboard.auth.login',    [], false), PHP_URL_PATH);
-    $registerPath = parse_url(route('filament.dashboard.auth.register', [], false), PHP_URL_PATH);
+//              ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn () => view('auth.login-extra'))
+//         // SEMBUNYIKAN baris subheading (“or …”) di semua layout (page & simple)
+//       ->renderHook(PanelsRenderHook::STYLES_AFTER, function () {
+//     // Path relatif dari Filament (tanpa host). Ini aman, tapi nanti kita normalisasi di JS.
+//     $loginPath    = parse_url(route('filament.dashboard.auth.login',    [], false), PHP_URL_PATH);
+//     $registerPath = parse_url(route('filament.dashboard.auth.register', [], false), PHP_URL_PATH);
 
-    $loginJson    = json_encode($loginPath);
-    $registerJson = json_encode($registerPath);
+//     $loginJson    = json_encode($loginPath);
+//     $registerJson = json_encode($registerPath);
 
-    return new HtmlString(<<<HTML
-<style>
-/* Sembunyikan subheading default “or …” DI MANA PUN */
-.fi-auth-card header h1 + *, .fi-simple-main header h1 + * { display: none !important; }
+//     return new HtmlString(<<<HTML
+// <style>
+// /* Sembunyikan subheading default “or …” DI MANA PUN */
+// .fi-auth-card header h1 + *, .fi-simple-main header h1 + * { display: none !important; }
 
-/* CTA footer (pusat) */
-.auth-footer-wrap{ display:flex; justify-content:center; width:100%; margin-top:1rem; }
-.auth-footer-row{ margin:0 auto; text-align:center; font-size:.875rem; color:rgb(75 85 99); }
-.auth-footer-link{ color:rgb(37 99 235); text-decoration:underline; }
-.auth-footer-link:hover{ text-decoration:none; }
-</style>
+// /* CTA footer (pusat) */
+// .auth-footer-wrap{ display:flex; justify-content:center; width:100%; margin-top:1rem; }
+// .auth-footer-row{ margin:0 auto; text-align:center; font-size:.875rem; color:rgb(75 85 99); }
+// .auth-footer-link{ color:rgb(37 99 235); text-decoration:underline; }
+// .auth-footer-link:hover{ text-decoration:none; }
+// </style>
 
-<script>
-(function () {
-  var LOGIN_PATH    = $loginJson;     // ex: "/dashboard/login"
-  var REGISTER_PATH = $registerJson;  // ex: "/dashboard/register"
+// <script>
+// (function () {
+//   var LOGIN_PATH    = $loginJson;     // ex: "/dashboard/login"
+//   var REGISTER_PATH = $registerJson;  // ex: "/dashboard/register"
 
-  // Normalisasi pathname: buang prefix "/public" jika ada
-  function normalizedPathname() {
-    var p = location.pathname || '/';
-    return p.replace(/^\\/public(?![^/])|^\\/public\\//, '/');
-  }
+//   // Normalisasi pathname: buang prefix "/public" jika ada
+//   function normalizedPathname() {
+//     var p = location.pathname || '/';
+//     return p.replace(/^\\/public(?![^/])|^\\/public\\//, '/');
+//   }
 
-  function pageKind() {
-    var p = normalizedPathname();
-    if (p.startsWith(LOGIN_PATH))    return 'login';
-    if (p.startsWith(REGISTER_PATH)) return 'register';
-    return 'other';
-  }
+//   function pageKind() {
+//     var p = normalizedPathname();
+//     if (p.startsWith(LOGIN_PATH))    return 'login';
+//     if (p.startsWith(REGISTER_PATH)) return 'register';
+//     return 'other';
+//   }
 
-  function setHeading() {
-    var h1 = document.querySelector('.fi-auth-card header h1, .fi-simple-main header h1');
-    if (!h1) return;
-    var kind = pageKind();
-    if (kind === 'login')    h1.textContent = 'Masuk';
-    if (kind === 'register') h1.textContent = 'Daftar';
-  }
+//   function setHeading() {
+//     var h1 = document.querySelector('.fi-auth-card header h1, .fi-simple-main header h1');
+//     if (!h1) return;
+//     var kind = pageKind();
+//     if (kind === 'login')    h1.textContent = 'Masuk';
+//     if (kind === 'register') h1.textContent = 'Daftar';
+//   }
 
-  function ensureFooter() {
-    var kind = pageKind();
-    if (kind !== 'login' && kind !== 'register') return;
+//   function ensureFooter() {
+//     var kind = pageKind();
+//     if (kind !== 'login' && kind !== 'register') return;
 
-    var card = document.querySelector('.fi-auth-card, .fi-simple-main');
-    if (!card) return;
+//     var card = document.querySelector('.fi-auth-card, .fi-simple-main');
+//     if (!card) return;
 
-    var old = card.querySelector('.auth-footer-wrap');
-    if (old) old.remove();
+//     var old = card.querySelector('.auth-footer-wrap');
+//     if (old) old.remove();
 
-    var text, linkText, href;
-    if (kind === 'login') {
-      text = 'Belum punya akun?';
-      linkText = 'Buat akun baru';
-      href = REGISTER_PATH;
-    } else {
-      text = 'Sudah punya akun?';
-      linkText = 'Masuk sini';
-      href = LOGIN_PATH;
-    }
+//     var text, linkText, href;
+//     if (kind === 'login') {
+//       text = 'Belum punya akun?';
+//       linkText = 'Buat akun baru';
+//       href = REGISTER_PATH;
+//     } else {
+//       text = 'Sudah punya akun?';
+//       linkText = 'Masuk sini';
+//       href = LOGIN_PATH;
+//     }
 
-    var wrap = document.createElement('div');
-    wrap.className = 'auth-footer-wrap';
-    wrap.innerHTML =
-      '<p class="auth-footer-row">' +
-        text + ' ' +
-        '<a class="auth-footer-link" href="' + href + '">' + linkText + '</a>' +
-      '</p>';
+//     var wrap = document.createElement('div');
+//     wrap.className = 'auth-footer-wrap';
+//     wrap.innerHTML =
+//       '<p class="auth-footer-row">' +
+//         text + ' ' +
+//         '<a class="auth-footer-link" href="' + href + '">' + linkText + '</a>' +
+//       '</p>';
 
-    var form = card.querySelector('form');
-    (form && form.parentNode ? form.parentNode : card).appendChild(wrap);
-  }
+//     var form = card.querySelector('form');
+//     (form && form.parentNode ? form.parentNode : card).appendChild(wrap);
+//   }
 
-  function run() {
-    setHeading();      // ganti "Sign in" ↔ "Sign up"
-    ensureFooter();    // pasang CTA bawah & pusatkan
-    // Subheading default sudah dihilangkan via CSS global di atas.
-  }
+//   function run() {
+//     setHeading();      // ganti "Sign in" ↔ "Sign up"
+//     ensureFooter();    // pasang CTA bawah & pusatkan
+//     // Subheading default sudah dihilangkan via CSS global di atas.
+//   }
 
-  // Initial + navigasi Livewire/SPA
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
-  window.addEventListener('livewire:navigated', run);
-  var root = document.querySelector('.fi-auth-card, .fi-simple-main');
-  if (root) new MutationObserver(run).observe(root, { childList: true, subtree: true });
-  var last = location.pathname;
-  setInterval(function(){ if (location.pathname !== last) { last = location.pathname; run(); } }, 300);
-})();
-</script>
-HTML);
-})
+//   // Initial + navigasi Livewire/SPA
+//   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+//   window.addEventListener('livewire:navigated', run);
+//   var root = document.querySelector('.fi-auth-card, .fi-simple-main');
+//   if (root) new MutationObserver(run).observe(root, { childList: true, subtree: true });
+//   var last = location.pathname;
+//   setInterval(function(){ if (location.pathname !== last) { last = location.pathname; run(); } }, 300);
+// })();
+// </script>
+// HTML);
+// })
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
