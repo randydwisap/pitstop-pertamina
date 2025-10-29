@@ -2,11 +2,11 @@
 
 namespace App\Filament\Auth\Actions;
 
-use Filament\Actions\Action; // ✅ gunakan ini
+use App\Filament\Notifications\CustomFilamentResetPassword;
+use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
-use App\Filament\Notifications\CustomFilamentResetPassword;
 
 class CustomPasswordResetAction extends Action
 {
@@ -27,7 +27,7 @@ class CustomPasswordResetAction extends Action
             $status = Password::sendResetLink(
                 ['email' => $data['email']],
                 function ($user, $token) {
-                    // ✅ gunakan notifikasi custom kamu
+                    // ✅ Gunakan notifikasi custom kamu
                     $user->notify(new CustomFilamentResetPassword($token));
                 }
             );

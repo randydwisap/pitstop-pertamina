@@ -28,6 +28,8 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Swis\Filament\Backgrounds\ImageProviders\MyImages;
+use App\Filament\Auth\Pages\CustomPasswordResetRequest;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -195,7 +197,7 @@ HTML);
                 Authenticate::class,
                 EnsureEmailIsVerified::class,
             ])
-            ->passwordReset()
+            ->passwordReset(CustomPasswordResetRequest::class)
             ->emailVerification()
             
             ;

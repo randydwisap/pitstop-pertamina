@@ -52,6 +52,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
 
         public function sendPasswordResetNotification($token)
     {
+         \Log::info('🔔 Custom reset password notification triggered for '.$this->email);
         $this->notify(new CustomFilamentResetPassword($token));
     }
 
