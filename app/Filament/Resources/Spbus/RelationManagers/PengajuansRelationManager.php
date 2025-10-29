@@ -20,6 +20,7 @@ use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Infolists\Components\TextEntry;
 
 class PengajuansRelationManager extends RelationManager
 {
@@ -33,7 +34,6 @@ class PengajuansRelationManager extends RelationManager
         $isApprover = $user && $user->hasAnyRole(['super_admin', 'Super Admin']);
 
         return $schema->components([
-            // spbu_id otomatis diisi oleh RelationManager, TIDAK perlu field
             Select::make('product_id')
                 ->label('Produk')
                 ->relationship(
@@ -41,22 +41,19 @@ class PengajuansRelationManager extends RelationManager
                     titleAttribute: 'nama_produk',
                     modifyQueryUsing: function ($query) {
                         $user = auth()->user();
-                        $spbu = $this->ownerRecord; // SPBU yang sedang dibuka
+                        $spbu = $this->ownerRecord;
 
-                        // hanya produk aktif
                         $query->where('is_active', true);
 
-                        // kalau BUKAN super admin → produk milik user sendiri
                         if (! $user?->hasAnyRole(['super_admin', 'Super Admin'])) {
                             $query->where('user_id', $user?->id ?? 0);
                         }
 
-                        // ⛔️ filter agar tidak muncul produk yang sudah diajukan ke SPBU ini
                         $query->whereNotIn('id', function ($sub) use ($spbu) {
                             $sub->select('product_id')
                                 ->from('pengajuans')
                                 ->where('spbu_id', $spbu->id)
-                                ->whereNull('deleted_at'); // abaikan yang di-soft delete
+                                ->whereNull('deleted_at');
                         });
                     }
                 )
@@ -64,7 +61,6 @@ class PengajuansRelationManager extends RelationManager
                 ->preload()
                 ->native(false)
                 ->required(),
-
 
             TextInput::make('quantity')
                 ->label('Jumlah')
@@ -115,7 +111,6 @@ class PengajuansRelationManager extends RelationManager
                     ->label('Diajukan oleh')
                     ->icon('heroicon-m-user-circle')
                     ->iconColor('gray')
-                    // Tampilkan nama toko di baris bawah:
                     ->description(
                         fn ($record) => $record->product?->toko?->nama_toko
                             ? 'Toko: ' . $record->product->toko->nama_toko
@@ -123,9 +118,7 @@ class PengajuansRelationManager extends RelationManager
                         position: 'below'
                     )
                     ->extraAttributes(['class' => 'leading-tight'])
-                    // cari di dua field terkait:
                     ->searchable(['creator.name', 'product.toko.nama_toko'])
-                    // urutkan berdasarkan nama creator (opsional):
                     ->sortable(query: function ($query, string $direction) {
                         $query->join('users as creators', 'creators.id', '=', 'pengajuans.created_by')
                             ->orderBy('creators.name', $direction)
@@ -138,23 +131,23 @@ class PengajuansRelationManager extends RelationManager
                     ->suffix(' pcs'),
 
                 TextColumn::make('status')
-                            ->label('Status')
-                            ->formatStateUsing(fn (?string $state) => $state ? ucfirst($state) : '-') // tampilkan "Approved/Pending"
-                            ->color(fn (?string $state): string => match ($state) {
-                                'approved' => 'success',
-                                'pending'  => 'warning',
-                                default    => 'gray',
-                            })
-                            ->icon(fn (?string $state): ?string => match ($state) {
-                                'approved' => 'heroicon-m-check-badge',
-                                'pending'  => 'heroicon-m-clock',
-                                default    => 'heroicon-m-question-mark-circle',
-                            })
-                            ->iconColor(fn (?string $state): string => match ($state) {
-                                'approved' => 'success',
-                                'pending'  => 'warning',
-                                default    => 'gray',
-                            }),
+                    ->label('Status')
+                    ->formatStateUsing(fn (?string $state) => $state ? ucfirst($state) : '-')
+                    ->color(fn (?string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending'  => 'warning',
+                        default    => 'gray',
+                    })
+                    ->icon(fn (?string $state): ?string => match ($state) {
+                        'approved' => 'heroicon-m-check-badge',
+                        'pending'  => 'heroicon-m-clock',
+                        default    => 'heroicon-m-question-mark-circle',
+                    })
+                    ->iconColor(fn (?string $state): string => match ($state) {
+                        'approved' => 'success',
+                        'pending'  => 'warning',
+                        default    => 'gray',
+                    }),
 
                 TextColumn::make('approved_at')
                     ->label('Disetujui')
@@ -173,16 +166,14 @@ class PengajuansRelationManager extends RelationManager
                     ->label('Ajukan Produk')
                     ->icon('heroicon-m-plus')
                     ->mutateFormDataUsing(function (array $data) {
-                        // set created_by + paksa status pending utk non-approver
                         $data['created_by'] = auth()->id();
                         if (! auth()->user()?->hasAnyRole(['super_admin','Super Admin'])) {
                             $data['status'] = 'pending';
                         }
                         return $data;
                     })
-                    // sembunyikan create jika slot SPBU penuh (1 pengajuan = 1 slot)
                     ->visible(function () {
-                        $spbu = $this->ownerRecord; // SPBU saat ini
+                        $spbu = $this->ownerRecord;
                         $slot = (int) ($spbu->slot ?? 0);
                         $terpakai = Pengajuan::query()
                             ->where('spbu_id', $spbu->id)
@@ -193,53 +184,149 @@ class PengajuansRelationManager extends RelationManager
                     }),
             ])
 
-            // aksi per baris
             ->actions([
-                ActionGroup::make([
-                    DeleteAction::make()->hiddenLabel()->color('gray'),
-                    // APPROVE
-                    Action::make('approve')
-                        ->label('Approve')
-                        ->icon('heroicon-m-check-circle')
-                        ->color('success')
-                        ->visible(function ($record) use ($canApprove) {
-                            if (! $canApprove) return false;
-                            if ($record->status !== 'pending') return false;
+                Action::make('lihat_produk')
+                    ->icon('heroicon-o-eye')
+                    ->label('')
+                    ->iconButton()
+                    ->color('info')
+                    ->tooltip('Lihat detail produk')
+                    ->modalHeading('Detail Pengajuan & Produk')
+                    ->modalWidth('3xl')
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel('Tutup')
+                    ->form(function ($record) {
+                        $produk = $record->product;
 
-                            // cek slot SPBU (1 pengajuan = 1 slot)
-                            $spbu = $this->ownerRecord;
-                            $slot = (int) ($spbu->slot ?? 0);
-                            $terpakai = Pengajuan::query()
-                                ->where('spbu_id', $spbu->id)
-                                ->where('status', 'approved')
-                                ->count();
+                        return [
+                            // === Field dari tabel Pengajuans ===
+                            \Filament\Forms\Components\TextInput::make('nama_toko')
+                                ->label('Nama Toko')
+                                ->default($produk?->toko?->nama_toko ?? '-')
+                                ->disabled(),
 
-                            return $terpakai < $slot;
-                        })
-                        ->requiresConfirmation()
-                        ->action(function ($record) {
-                            // re-check anti race-condition
-                            $spbu = $this->ownerRecord;
-                            $slot = (int) ($spbu->slot ?? 0);
-                            $terpakai = Pengajuan::query()
-                                ->where('spbu_id', $spbu->id)
-                                ->where('status', 'approved')
-                                ->count();
+                            \Filament\Forms\Components\TextInput::make('quantity')
+                                ->label('Jumlah')
+                                ->suffix(' pcs')
+                                ->default($record->quantity ?? 0)
+                                ->disabled(),
 
-                            if ($terpakai >= $slot) {
-                                $this->dispatch('notify', type: 'danger', body: 'Maaf, slot SPBU sudah penuh.');
-                                return;
-                            }
+                            \Filament\Forms\Components\TextInput::make('status')
+                                ->label('Status')
+                                ->default(ucfirst($record->status ?? '-'))
+                                ->disabled(),
 
-                            $record->status      = 'approved';
-                            $record->approved_by = auth()->id();
-                            $record->approved_at = now();
-                            $record->save();
+                            // === Gambar Produk ===
+                            \Filament\Forms\Components\Placeholder::make('picture')
+                                ->label('Gambar Produk')
+                                ->content(function ($record) {
+                                    $path = $record->product?->picture;
+                                    $url = $path ? asset('storage/' . $path) : url('images/default-product.png');
 
-                            $this->dispatch('notify', type: 'success', body: 'Pengajuan disetujui.');
-                            $this->dispatch('$refresh');
-                        }),
-                ])->icon('heroicon-m-ellipsis-vertical')->buttonGroup(),
+                                    return '<img src="' . $url . '" 
+                                            alt="Gambar Produk"
+                                            style="width: 200px; height: 200px; object-fit: contain; border-radius: 12px; border: 1px solid #ccc;">';
+                                })
+                                ->columnSpanFull()
+                                ->extraAttributes(['class' => 'text-center'])
+                                ->html(),
+
+                            // === Field dari tabel Products ===
+                            \Filament\Forms\Components\TextInput::make('nama_produk')
+                                ->label('Nama Produk')
+                                ->default($produk->nama_produk ?? '-')
+                                ->disabled(),
+
+                            \Filament\Forms\Components\TextInput::make('jenis_produk')
+                                ->label('Jenis Produk')
+                                ->default($produk->jenis_produk ?? '-')
+                                ->disabled(),
+
+                            \Filament\Forms\Components\TextInput::make('harga_jual')
+                                ->label('Harga Jual')
+                                ->prefix('Rp')
+                                ->numeric()
+                                ->default($produk->harga_jual ?? 0)
+                                ->disabled(),
+
+                            \Filament\Forms\Components\TextInput::make('berat_gram')
+                                ->label('Berat (gram)')
+                                ->default($produk->berat_gram ?? '-')
+                                ->disabled(),
+
+                            \Filament\Forms\Components\TextInput::make('panjang_cm')
+                                ->label('Panjang (cm)')
+                                ->default($produk->panjang_cm ?? '-')
+                                ->disabled(),
+
+                            \Filament\Forms\Components\TextInput::make('lebar_cm')
+                                ->label('Lebar (cm)')
+                                ->default($produk->lebar_cm ?? '-')
+                                ->disabled(),
+
+                            \Filament\Forms\Components\TextInput::make('tinggi_cm')
+                                ->label('Tinggi (cm)')
+                                ->default($produk->tinggi_cm ?? '-')
+                                ->disabled(),
+
+                            \Filament\Forms\Components\Textarea::make('deskripsi')
+                                ->label('Deskripsi Produk')
+                                ->default($produk->deskripsi ?? '-')
+                                ->disabled()
+                                ->rows(3)
+                                ->columnSpanFull(),
+                        ];
+                    }),
+
+                // 🗑️ DELETE (tetap sama)
+                DeleteAction::make()
+                    ->hiddenLabel()
+                    ->color('gray')
+                    ->button(),
+
+                // ✅ APPROVE (tanpa perubahan)
+                Action::make('approve')
+                    ->label('Approve')
+                    ->icon('heroicon-m-check-circle')
+                    ->color('success')
+                    ->visible(function ($record) use ($canApprove) {
+                        if (! $canApprove) return false;
+                        if ($record->status !== 'pending') return false;
+
+                        $spbu = $this->ownerRecord;
+                        $slot = (int) ($spbu->slot ?? 0);
+                        $terpakai = Pengajuan::query()
+                            ->where('spbu_id', $spbu->id)
+                            ->where('status', 'approved')
+                            ->count();
+
+                        return $terpakai < $slot;
+                    })
+                    ->requiresConfirmation()
+                    ->action(function ($record) {
+                        $spbu = $this->ownerRecord;
+                        $slot = (int) ($spbu->slot ?? 0);
+                        $terpakai = Pengajuan::query()
+                            ->where('spbu_id', $spbu->id)
+                            ->where('status', 'approved')
+                            ->count();
+
+                        if ($terpakai >= $slot) {
+                            $this->dispatch('notify', type: 'danger', body: 'Maaf, slot SPBU sudah penuh.');
+                            return;
+                        }
+
+                        $record->status      = 'approved';
+                        $record->approved_by = auth()->id();
+                        $record->approved_at = now();
+                        $record->save();
+
+                        $this->dispatch('notify', type: 'success', body: 'Pengajuan disetujui.');
+                        $this->dispatch('$refresh');
+                    }),
             ]);
+
+
+
     }
 }
