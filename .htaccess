@@ -5,10 +5,12 @@ DirectoryIndex public/index.php
 RewriteEngine On
 RewriteBase /
 
-# Jika file/direktori nyata, layani langsung
+# Kalau file/dir beneran ada di root, layani apa adanya
+RewriteCond %{REQUEST_URI} !^/public/
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Semua request lain masuk ke public/index.php tanpa ubah URL
-RewriteRule ^ public/index.php [L]
+# Selain itu, lempar ke /public (internal rewrite, URL tetap bersih)
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ public/$1 [L]

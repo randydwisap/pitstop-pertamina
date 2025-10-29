@@ -5,6 +5,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use Filament\Notifications\Notification;
+use App\Models\User;
 
 
 Route::get('/', function () {
@@ -47,3 +49,28 @@ Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.update');
+
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::post('/notifications/read/{id}', function (string $id) {
+        $n = auth()->user()?->notifications()->whereKey($id)->first();
+        if ($n && $n->read_at === null) $n->markAsRead();
+        return back();
+    })->name('notifications.markRead');
+
+    Route::post('/notifications/read-all', function () {
+        auth()->user()?->unreadNotifications->markAsRead();
+        return back();
+    })->name('notifications.markAllRead');
+});
+
+Route::get('/test-notif', function () {
+    // ambil user yang sedang login; kalau tidak ada, ambil user pertama
+    $user = auth()->user() ?: User::first();
+
+    Notification::make()
+        ->title('Contoh Notifikasi')
+        ->body('Ini notifikasi percobaan. Berhasil!')
+        ->sendToDatabase($user);   // <-- masuk ke tabel notifications & muncul di lonceng
+
+    return 'OK';
+})->middleware('web');

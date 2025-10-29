@@ -55,6 +55,15 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ]) 
+->renderHook(
+    \Filament\View\PanelsRenderHook::USER_MENU_BEFORE,
+    fn () => new \Illuminate\Support\HtmlString(
+        view('filament.partials.notifications-bell')->render()
+    )
+)
+->renderHook(PanelsRenderHook::STYLES_AFTER, function () {
+    return new HtmlString('<style>[x-cloak]{display:none!important}</style>' . /* … CSS kamu yang lain … */ '');
+})
              ->renderHook(PanelsRenderHook::AUTH_LOGIN_FORM_AFTER, fn () => view('auth.login-extra'))
         // SEMBUNYIKAN baris subheading (“or …”) di semua layout (page & simple)
       ->renderHook(PanelsRenderHook::STYLES_AFTER, function () {

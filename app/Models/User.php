@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Notifications\CustomVerifyEmail; 
 use App\Notifications\CustomResetPasswordNotification;
 use App\Filament\Notifications\CustomFilamentResetPassword;
-
+use App\Notifications\SetupTokoReminder;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
@@ -78,18 +78,28 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
         return asset('images/default-avatar.png');
     }
 
-    protected static function booted(): void
-    {
-        static::created(function (User $user) {
-            // Pastikan role 'mitra' ada
-            Role::findOrCreate('mitra');
+   protected static function booted(): void
+{
+    static::created(function (User $user) {
+        // Pastikan role 'mitra' ada dan assign ke user baru
+        Role::findOrCreate('mitra');
+        if (! $user->hasRole('mitra')) {
+            $user->assignRole('mitra');
+        }
 
-            // Kalau belum punya, assign
-            if (! $user->hasRole('mitra')) {
-                $user->assignRole('mitra');
+
+        // Kirim notifikasi agar user langsung mengatur toko
+        try {
+            // Kalau mau aman, kirim hanya kalau belum punya toko
+            if (! $user->toko()->exists()) {
+                $user->notify(new SetupTokoReminder());
             }
-        });
-    }
+        } catch (\Throwable $e) {
+            Log::warning('Gagal kirim SetupTokoReminder: '.$e->getMessage());
+        }
+    });
+}
+
     /**
      * The attributes that should be hidden for serialization.
      *
