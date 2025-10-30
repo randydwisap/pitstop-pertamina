@@ -18,6 +18,7 @@ class ListSpbus extends ListRecords
         return [
             CreateAction::make()
                 ->label('Buat SPBU')
+                ->tooltip('Tambah SPBU')
                 ->icon('heroicon-m-plus')
         ];
     }

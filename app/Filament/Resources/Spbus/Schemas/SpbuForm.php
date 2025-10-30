@@ -19,11 +19,12 @@ class SpbuForm
                 ->directory('spbu')     // storage/app/public/spbu
                 ->disk('public')        // pastikan sudah `php artisan storage:link`
                 ->visibility('public')
-                ->imagePreviewHeight('220')
+                ->imagePreviewHeight('240')
                 ->imageEditor()
                 ->downloadable()
                 ->openable()
-                ->hint('Unggah foto tampak depan SPBU (opsional).'),
+                ->hint('Unggah foto tampak depan SPBU (opsional).')
+                ->columnSpanFull(),     // tampil penuh 1 kolom
 
             TextInput::make('nomor_spbu')
                 ->label('Nomor SPBU')
@@ -32,19 +33,21 @@ class SpbuForm
                 ->required()
                 ->maxLength(100)
                 ->unique('spbus', 'nomor_spbu', ignoreRecord: true)
-                ->helperText('Gunakan format resmi SPBU.'),
+                ->helperText('Gunakan format resmi SPBU.')
+                ->columnSpanFull(),
 
             Select::make('tipe')
                 ->label('Tipe SPBU')
                 ->options([
-                    'coco'  => 'COCO',
+                    'coco' => 'COCO',
                     'dodo' => 'DODO',
                     'codo' => 'CODO',
                 ])
-                ->native(false)   // dropdown modern
+                ->native(false)
                 ->searchable()
                 ->default('coco')
-                ->required(),       
+                ->required()
+                ->columnSpanFull(),
 
             Select::make('kota')
                 ->label('Kota / Kab.')
@@ -70,31 +73,34 @@ class SpbuForm
                         );
                     }
 
-                    // gunakan nama kota sebagai value & label
                     return $data->mapWithKeys(fn ($item) => [
                         $item['text'] => $item['text'],
                     ])->toArray();
                 })
-                ->getOptionLabelUsing(fn ($value): ?string => $value) // WAJIB agar validasi opsi lolos
+                ->getOptionLabelUsing(fn ($value): ?string => $value)
                 ->native(false)
-                ->required(),
+                ->required()
+                ->columnSpanFull(),
 
             TextInput::make('kecamatan')
                 ->label('Kecamatan')
                 ->placeholder('Nama Kecamatan')
-                ->maxLength(100),
+                ->maxLength(100)
+                ->columnSpanFull(),
 
             TextInput::make('kelurahan')
-                    ->label('Kelurahan')
-                    ->placeholder('Nama kelurahan')
-                    ->maxLength(100),
+                ->label('Kelurahan')
+                ->placeholder('Nama kelurahan')
+                ->maxLength(100)
+                ->columnSpanFull(),
 
             Textarea::make('alamat')
                 ->label('Alamat')
                 ->placeholder('Nama jalan, nomor, RT/RW…')
                 ->rows(3)
                 ->autosize()
-                ->maxLength(255),    
+                ->maxLength(255)
+                ->columnSpanFull(),
 
             TextInput::make('potensi_konsumen')
                 ->label('Potensi Konsumen')
@@ -103,7 +109,8 @@ class SpbuForm
                 ->minValue(0)
                 ->step(1)
                 ->suffix('kendaraan/hari')
-                ->helperText('Perkiraan rata-rata kendaraan per hari.'),
+                ->helperText('Perkiraan rata-rata kendaraan per hari.')
+                ->columnSpanFull(),
 
             TextInput::make('slot')
                 ->label('Slot')
@@ -113,7 +120,8 @@ class SpbuForm
                 ->step(1)
                 ->default(0)
                 ->suffix('slot')
-                ->helperText('Jumlah slot tersedia untuk layanan Pitstop.'),
+                ->helperText('Jumlah slot tersedia untuk layanan Pitstop.')
+                ->columnSpanFull(),
 
             TextInput::make('margin')
                 ->label('Sharing Margin')
@@ -124,7 +132,24 @@ class SpbuForm
                 ->step(0.1)
                 ->default(0)
                 ->suffix('%')
-                ->helperText('Persentase bagi hasil (0–100%).'),
+                ->helperText('Persentase bagi hasil (0–100%).')
+                ->columnSpanFull(),
+
+            TextInput::make('nama_pic')
+                ->label('Nama PIC')
+                ->placeholder('Nama Penanggung Jawab')
+                ->maxLength(100)
+                ->required()
+                ->helperText('Masukkan nama penanggung jawab SPBU.')
+                ->columnSpanFull(),
+
+            TextInput::make('nomor_pic')
+                ->label('Nomor PIC')
+                ->placeholder('08xxxxxxxxxx')
+                ->tel() // gunakan input bertipe telepon
+                ->maxLength(20)
+                ->columnSpanFull()
+                ->helperText('Nomor kontak PIC yang dapat dihubungi.'),
         ]);
     }
 }

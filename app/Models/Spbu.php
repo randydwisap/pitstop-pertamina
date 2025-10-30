@@ -13,7 +13,7 @@ class Spbu extends Model
 
     protected $fillable = [
         'nomor_spbu','tipe','alamat','kelurahan','kecamatan','kota',
-        'potensi_konsumen','margin','slot','foto',
+        'potensi_konsumen','margin','slot','foto','nama_pic','nomor_pic'
     ];
 
     public function pengajuans()

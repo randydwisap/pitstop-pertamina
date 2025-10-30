@@ -165,6 +165,8 @@ class PengajuansRelationManager extends RelationManager
                 CreateAction::make()
                     ->label('Ajukan Produk')
                     ->icon('heroicon-m-plus')
+                    ->tooltip('Ajukan Produk ke SPBU')
+
                     ->mutateFormDataUsing(function (array $data) {
                         $data['created_by'] = auth()->id();
                         if (! auth()->user()?->hasAnyRole(['super_admin','Super Admin'])) {

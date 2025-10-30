@@ -13,7 +13,9 @@ class EditSpbu extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            DeleteAction::make(),
+            DeleteAction::make()
+            ->tooltip('Hapus SPBU')
+,
         ];
     }
     public function getTitle(): string
