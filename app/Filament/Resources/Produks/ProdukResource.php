@@ -50,6 +50,11 @@ class ProdukResource extends Resource
         return 50;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ProdukForm::configure($schema);

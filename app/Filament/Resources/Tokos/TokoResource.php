@@ -48,6 +48,11 @@ class TokoResource extends Resource
         return 50;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     protected static ?string $recordTitleAttribute          = 'nama_toko';
         public static function getNavigationLabel(): string
     {

@@ -37,6 +37,12 @@ class UserResource extends Resource
         // Selain mitra, posisikan biasa (mis. 50)
         return 100;
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

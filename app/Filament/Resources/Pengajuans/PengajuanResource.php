@@ -39,6 +39,11 @@ class PengajuanResource extends Resource
         return 1;
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PengajuanForm::configure($schema);
