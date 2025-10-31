@@ -166,16 +166,21 @@ Placeholder::make('product_preview')
                 ->columnSpan(1),
 
             TextInput::make('quantity')
-                ->label('Jumlah')->numeric()->minValue(1)->default(1)->required(),
+                ->label('Estimasi Kuantiti yang dikirim')->numeric()->minValue(1)->default(1)->required(),
 
             Textarea::make('notes')->label('Catatan')->rows(3)->autosize(),
 
             Select::make('status')
                 ->label('Status')
-                ->options(['pending'=>'Pending','approved'=>'Approved'])
+                ->options([
+                    'pending'  => 'Pending',
+                    'approved' => 'Approved',
+                ])
                 ->default('pending')
                 ->native(false)
+                ->visible($isApprover) // hanya tampil jika approver
                 ->disabled(! $isApprover),
+
         ]);
     }
 }

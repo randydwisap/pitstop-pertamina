@@ -174,9 +174,9 @@ class ProduksTable
             // AKSI PER RECORD
             ->recordActions([
                 ActionGroup::make([
-                    ViewAction::make()->hiddenLabel(),
-                    EditAction::make()->hiddenLabel()->color('gray'),
-                    DeleteAction::make()->hiddenLabel()->color('gray'),
+                    ViewAction::make()->hiddenLabel()->tooltip('Lihat Produk')->color('warning'),
+                    EditAction::make()->hiddenLabel()->color('info')->tooltip('Edit Produk'),
+                    DeleteAction::make()->hiddenLabel()->color('danger')->tooltip('Hapus Produk'),
                 ])->icon('heroicon-m-ellipsis-vertical')->buttonGroup(),
             ])
 

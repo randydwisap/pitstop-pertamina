@@ -132,7 +132,7 @@ class SpbusTable
         ViewAction::make()
     ->hiddenLabel()
     ->tooltip('Lihat detail SPBU')
-    ->color('gray')
+    ->color('warning')
     ->icon('heroicon-m-eye')
     ->form(fn ($record) => [
         // === FOTO SPBU ===
@@ -236,13 +236,13 @@ class SpbusTable
         EditAction::make()
             ->hiddenLabel()
             ->tooltip('Edit data SPBU')
-            ->color('gray')
+            ->color('info')
             ->icon('heroicon-m-pencil-square'),
 
         DeleteAction::make()
             ->hiddenLabel()
             ->tooltip('Hapus SPBU')
-            ->color('gray')
+            ->color('danger')
             ->icon('heroicon-m-trash'),
 
         Action::make('ajukanProduk')

@@ -56,6 +56,15 @@ class TokoForm
                     ->helperText('Cantumkan alamat lengkap agar mudah ditemukan.')
                     ->columnSpanFull(),
 
+                TextInput::make('telephone')
+                    ->label('Nomor HP')
+                    ->placeholder('08xxxxxxxxxx')                    
+                    ->type('tel')                    
+                    ->required()
+                    ->maxLength(15)
+                    ->helperText('Cantumkan nomor telfon agar dapat dihubungi oleh petugas.')
+                    ->columnSpanFull(),
+
                 // USER ID — otomatis milik user login, disimpan tapi disembunyikan
                 Select::make('user_id')
                     ->label('Pemilik (User)')

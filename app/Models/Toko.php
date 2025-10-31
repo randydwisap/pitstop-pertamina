@@ -15,6 +15,7 @@ class Toko extends Model
         'alamat_toko',
         'foto',
         'user_id',
+        'telephone',
     ];
 
     public function user()
