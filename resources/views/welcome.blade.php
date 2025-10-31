@@ -496,7 +496,8 @@
               <h1>Kuatkan <span>UMKM Kuliner</span></h1>
               <p>Permudah operasional, perluas jangkauan, dan percepat omzet dengan alat yang ramah UMKM.</p>
               <div class="hero-actions justify-content-center justify-content-lg-start">
-                <a href="/dashboard/login" class="btn-primary scrollto">Daftar sebagai mitra</a>
+                <a href="/dashboard/login" class="btn-primary scrollto">Masuk</a>
+                <a href="/dashboard/register" class="btn-primary scrollto">Daftar</a>
                 {{-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-video d-flex align-items-center">
                   <i class="bi bi-play-fill"></i>
                   <span>Watch Demo</span>
