@@ -22,6 +22,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use App\Models\Produk;
 use App\Models\Pengajuan;
+use Illuminate\Support\Str;
+use Illuminate\Support\HtmlString;
 
 class SpbusTable
 {
@@ -230,8 +232,74 @@ class SpbusTable
             ->tel()
             ->disabled()
             ->columnSpanFull(),
-    ]),
+            // === DAFTAR PRODUK ===
+\Filament\Forms\Components\Placeholder::make('produk_table')
+    ->label(fn ($record) => 'Produk Terdaftar (' . $record->produks()->count() . ')')
+    ->content(function ($record) {
+$produkList = $record->produks()
+    ->where('pengajuans.status', 'approved') // filter langsung di hasManyThrough
+    ->with('toko')
+    ->get(['id', 'toko_id', 'picture', 'nama_produk', 'jenis_produk', 'harga_jual', 'deskripsi']);
 
+    if ($produkList->isEmpty()) {
+        return new HtmlString('<p class="text-gray-500 italic">Belum ada produk terdaftar di SPBU ini.</p>');
+    }
+
+    $html = '
+    <div style="
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        padding: 16px;
+        ">
+        <div style="display:flex;flex-wrap:wrap;gap:16px;">';
+
+    foreach ($produkList as $produk) {
+        $url = $produk->picture
+            ? asset('storage/' . $produk->picture)
+            : 'https://via.placeholder.com/200x120?text=No+Image';
+
+        $html .= '
+        <div style="
+            width:280px;
+            border:1px solid #e5e7eb;
+            border-radius:10px;
+            background:white;
+            box-shadow:0 1px 3px rgba(0,0,0,0.05);
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+            ">
+            <img src="' . e($url) . '" 
+                 style="width:100%;height:160px;object-fit:cover;border-bottom:1px solid #e5e7eb;">
+            <div style="padding:10px;display:flex;flex-direction:column;justify-content:space-between;flex-grow:1;">
+                <div>
+                    <div style="font-weight:600;font-size:14px;color:#111827;">' . e($produk->nama_produk) . '</div>
+                    <div style="font-size:12px;color:#6b7280;">' . e(optional($produk->toko)->nama_toko ?? '-') . '</div>
+                    <div style="font-size:12px;color:#4b5563;margin-top:4px;">' . e(Str::limit($produk->deskripsi, 70)) . '</div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+                    <span style="font-size:12px;background:#f3f4f6;color:#374151;padding:2px 6px;border-radius:6px;">' . e($produk->jenis_produk) . '</span>
+                    <span style="font-size:13px;font-weight:600;color:#059669;">Rp' . number_format($produk->harga_jual, 0, ',', '.') . '</span>
+                </div>
+            </div>
+        </div>';
+    }
+
+    $html .= '
+        </div>
+    </div>';
+
+    return new HtmlString($html);
+})
+
+
+    ->columnSpanFull()
+    ->extraAttributes(['class' => 'mt-6'])
+    ->html(),
+
+    ]),
 
         EditAction::make()
             ->hiddenLabel()

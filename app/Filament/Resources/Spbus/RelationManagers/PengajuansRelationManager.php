@@ -145,10 +145,99 @@ class PengajuansRelationManager extends RelationManager
             ])
 
             ->actions([
-                ViewAction::make()
-                    ->hiddenLabel()
-                    ->tooltip('Lihat Pengajuan')
-                    ->color('warning'),
+    // 👁️ Ganti ViewAction dengan Action::make('lihat_produk')
+    Action::make('lihat_produk')
+        ->icon('heroicon-o-eye')
+        ->label('')
+        ->iconButton()
+        ->color('info')
+        ->tooltip('Lihat detail produk')
+        ->modalHeading('Detail Pengajuan & Produk')
+        ->modalWidth('3xl')
+        ->modalSubmitAction(false)
+        ->modalCancelActionLabel('Tutup')
+        ->form(function ($record) {
+            $produk = $record->product;
+
+            return [
+                // === Field dari tabel Pengajuans ===
+                \Filament\Forms\Components\TextInput::make('nama_toko')
+                    ->label('Nama Toko')
+                    ->default($produk?->toko?->nama_toko ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('quantity')
+                    ->label('Jumlah')
+                    ->suffix(' pcs')
+                    ->default($record->quantity ?? 0)
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('status')
+                    ->label('Status')
+                    ->default(ucfirst($record->status ?? '-'))
+                    ->disabled(),
+
+                // === Gambar Produk ===
+                \Filament\Forms\Components\Placeholder::make('picture')
+                    ->label('Gambar Produk')
+                    ->content(function ($record) {
+                        $path = $record->product?->picture;
+                        $url = $path ? asset('storage/' . $path) : url('images/default-product.png');
+
+                        return '<img src="' . $url . '" 
+                                alt="Gambar Produk"
+                                style="width: 200px; height: 200px; object-fit: contain; border-radius: 12px; border: 1px solid #ccc;">';
+                    })
+                    ->columnSpanFull()
+                    ->extraAttributes(['class' => 'text-center'])
+                    ->html(),
+
+                // === Field dari tabel Products ===
+                \Filament\Forms\Components\TextInput::make('nama_produk')
+                    ->label('Nama Produk')
+                    ->default($produk->nama_produk ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('jenis_produk')
+                    ->label('Jenis Produk')
+                    ->default($produk->jenis_produk ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('harga_jual')
+                    ->label('Harga Jual')
+                    ->prefix('Rp')
+                    ->numeric()
+                    ->default($produk->harga_jual ?? 0)
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('berat_gram')
+                    ->label('Berat (gram)')
+                    ->default($produk->berat_gram ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('panjang_cm')
+                    ->label('Panjang (cm)')
+                    ->default($produk->panjang_cm ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('lebar_cm')
+                    ->label('Lebar (cm)')
+                    ->default($produk->lebar_cm ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\TextInput::make('tinggi_cm')
+                    ->label('Tinggi (cm)')
+                    ->default($produk->tinggi_cm ?? '-')
+                    ->disabled(),
+
+                \Filament\Forms\Components\Textarea::make('deskripsi')
+                    ->label('Deskripsi Produk')
+                    ->default($produk->deskripsi ?? '-')
+                    ->disabled()
+                    ->rows(3)
+                    ->columnSpanFull(),
+            ];
+        }),
 
                 EditAction::make()
                     ->hiddenLabel()

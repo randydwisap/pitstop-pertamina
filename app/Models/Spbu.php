@@ -25,4 +25,16 @@ class Spbu extends Model
         'potensi_konsumen' => 'integer',
         'slot'             => 'integer',
     ];
+public function produks()
+{
+    return $this->hasManyThrough(
+        \App\Models\Produk::class,
+        \App\Models\Pengajuan::class,
+        'spbu_id',     // Foreign key di tabel pengajuans
+        'id',          // Foreign key di tabel produks
+        'id',          // Local key di tabel spbus
+        'product_id'   // Local key di tabel pengajuans
+    )
+    ->select('produks.*', 'pengajuans.spbu_id as laravel_through_key');
+}
 }
