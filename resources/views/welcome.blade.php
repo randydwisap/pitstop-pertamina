@@ -2079,7 +2079,7 @@ menjadi salah satu Solusi dalam menaikkan penjualan sekaligus meningkatkan penge
                 <i class="bi bi-geo-alt"></i>
               </div>
               <div class="contact-info">
-                <p>2847 Maple Avenue<br>Los Angeles, CA 90210<br>United States</p>
+                <p>Jl. Buring No.24, Oro-oro Dowo,<br>Kec. Klojen, Kota Malang, Jawa Timur<br>65119</p>
               </div>
             </div>
 
@@ -2088,7 +2088,7 @@ menjadi salah satu Solusi dalam menaikkan penjualan sekaligus meningkatkan penge
                 <i class="bi bi-telephone"></i>
               </div>
               <div class="contact-info">
-                <p>+1 (555) 987-6543</p>
+                <p>+62 81352922555</p>
               </div>
             </div>
 
@@ -2102,11 +2102,11 @@ menjadi salah satu Solusi dalam menaikkan penjualan sekaligus meningkatkan penge
             </div>
 
             <div class="social-links">
-              <a href="#"><i class="bi bi-facebook"></i></a>
+              {{-- <a href="#"><i class="bi bi-facebook"></i></a>
               <a href="#"><i class="bi bi-twitter-x"></i></a>
               <a href="#"><i class="bi bi-linkedin"></i></a>
               <a href="#"><i class="bi bi-youtube"></i></a>
-              <a href="#"><i class="bi bi-github"></i></a>
+              <a href="#"><i class="bi bi-github"></i></a> --}}
             </div>
           </div>
         </div>
